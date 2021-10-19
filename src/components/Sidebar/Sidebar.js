@@ -1,11 +1,19 @@
 import React from 'react';
 import {Divider, Drawer, List, ListItem, ListItemText, Toolbar, Typography} from "@mui/material";
+import { makeStyles } from '@mui/styles';
 import {NavLink} from "react-router-dom";
 import "./Sidebar.css"
 
 const drawerWidth = 240;
 
+const useStyles = makeStyles({
+    paper: {
+        background: 'linear-gradient(0deg, rgba(4,0,64,1) 0%, rgba(233,233,233,0.3519782913165266) 27%, rgba(207,207,207,1) 100%);'
+    }
+})
+
 const Sidebar = () => {
+    const styles = useStyles();
     return (
         <Drawer
             sx={{
@@ -18,6 +26,7 @@ const Sidebar = () => {
             }}
             variant="permanent"
             anchor="left"
+            classes={{paper: styles.paper}}
         >
             <Toolbar>
                 <Typography>Lukasz</Typography>
