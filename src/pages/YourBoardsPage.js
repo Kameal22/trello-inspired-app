@@ -1,11 +1,12 @@
 import React from 'react';
+import BoardList from "../components/BoardList/BoardList";
+import {Typography} from "@mui/material";
 
-const YourBoardsPage = ({match}) => {
-    const userId = match.params.userId;
+const YourBoardsPage = () => {
     return (
         <div>
-            <h1>Hello {userId}</h1>
-            <h2>These are the boards that you are assigned to</h2>
+            <Typography variant="h2" style={{textAlign: "center", marginBottom: 40}}>Your boards:</Typography>
+            <BoardList numberOfBoards={3}/>
         </div>
     );
 };
