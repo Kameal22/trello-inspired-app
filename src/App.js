@@ -2,7 +2,7 @@ import MainPage from "./pages/MainPage";
 
 const App = () => {
   return (
-    <div>
+    <div style={{height: '100%'}}>
       <MainPage />
     </div>
   );

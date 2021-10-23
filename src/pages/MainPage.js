@@ -8,8 +8,8 @@ import Board from "../components/Board/Board";
 
 const MainPage = () => {
     return (
-        <div>
-            <Box sx={{display: 'flex'}}>
+        <div style={{height: "100%"}}>
+            <Box sx={{display: 'flex', height: '100%'}}>
                 <Sidebar/>
                 {/*TODO: fix background height*/}
                 <Box component="main" sx={{
