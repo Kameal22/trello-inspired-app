@@ -3,19 +3,25 @@ import {Button, Card, Grid} from "@mui/material";
 import BoardIcon from "../BoardIcon/BoardIcon";
 import AddIcon from "@mui/icons-material/Add";
 import {mockedBoards} from "../../data/mockedBoards";
+import BoardFormDialog from "../BoarFormDialog/BoardFormDialog";
 
 const BoardList = ({numberOfBoards}) => {
     const [boards, setBoards] = useState(mockedBoards.slice(0, numberOfBoards));
+    const [open, setOpen] = useState(false);
 
     //TODO: change it to send post to database and open popup window
-    const handleNewBoard = () => {
+    const addNewBoard = (name, description) => {
         const newBoard = {
             boardId: boards[boards.length - 1].boardId + 1,
-            name: "Added mocked board",
-            description: "New description"
+            name: name,
+            description: description
         }
 
         setBoards([...boards, newBoard]);
+    }
+
+    const toggleDialog = () => {
+        setOpen(!open);
     }
 
     return (
@@ -31,11 +37,12 @@ const BoardList = ({numberOfBoards}) => {
                     justifyContent: 'center',
                     backgroundColor: 'rgba(217,217,252,0.44)'
                 }}>
-                    <Button style={{width: '100%'}} onClick={handleNewBoard}>
+                    <Button style={{width: '100%'}} onClick={toggleDialog}>
                         <AddIcon/>
                     </Button>
                 </Card>
             </Grid>
+            <BoardFormDialog open={open} toggleDialog={toggleDialog} addNewBoard={addNewBoard}/>
         </Grid>
     );
 };

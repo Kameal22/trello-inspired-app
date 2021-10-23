@@ -1,10 +1,10 @@
 import React from 'react';
 import {Divider, Drawer, List, ListItem, ListItemText, Toolbar, Typography} from "@mui/material";
-import { makeStyles } from '@mui/styles';
+import {makeStyles} from '@mui/styles';
 import {NavLink} from "react-router-dom";
 import "./Sidebar.css"
 
-const drawerWidth = 240;
+const mockedUsername = "Lukasz";
 
 const useStyles = makeStyles({
     paper: {
@@ -17,11 +17,11 @@ const Sidebar = () => {
     return (
         <Drawer
             sx={{
-                width: drawerWidth,
+                width: '15%',
                 flexShrink: 0,
                 '& .MuiDrawer-paper': {
-                    width: drawerWidth,
                     boxSizing: 'border-box',
+                    width: '15%'
                 },
             }}
             variant="permanent"
@@ -29,7 +29,8 @@ const Sidebar = () => {
             classes={{paper: styles.paper}}
         >
             <Toolbar>
-                <Typography>Lukasz</Typography>
+                {/*TODO: add real username from jwt*/}
+                <Typography style={{color: "#050079"}} variant="h5">Hello {mockedUsername}!</Typography>
             </Toolbar>
             <Divider/>
             <List>

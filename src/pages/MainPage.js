@@ -11,10 +11,13 @@ const MainPage = () => {
         <div>
             <Box sx={{display: 'flex'}}>
                 <Sidebar/>
-                <Box
-                    component="main"
-                    sx={{flexGrow: 1, p: 3}}
-                >
+                {/*TODO: fix background height*/}
+                <Box component="main" sx={{
+                    flexGrow: 1,
+                    p: 3,
+                    background: 'linear-gradient(0deg, rgba(252,252,252,1) 0%, rgba(207,205,226,0.788953081232493) 71%)'
+                }}>
+                    {/*background: 'linear-gradient(45deg, rgba(4,0,64,1) 0%, rgba(233,233,233,0.3519782913165266) 27%, rgba(207,207,207,1) 100%)'*/}
                     <Route exact path={"/all-boards"} component={AllBoardsPage}/>
                     <Route exact path={"/:userId/boards"}
                            render={routeParams => <YourBoardsPage {...routeParams}/>}/>
