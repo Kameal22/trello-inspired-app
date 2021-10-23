@@ -6,7 +6,10 @@ import Column from "../Column/Column";
 const Board = ({boardId}) => {
     const [columns, setColumns] = useState(mockedColumns);
 
-    const columnItems = columns.map(column => <Grid style={{marginLeft: 15}} item xs={8} md={4} xl={2}>
+    const columnItems = columns.map(column => <Grid key={column.columnId}
+                                                    style={{marginLeft: 15}}
+                                                    item
+                                                    xs={8} md={4} xl={2}>
         <Column {...column} />
     </Grid>);
 

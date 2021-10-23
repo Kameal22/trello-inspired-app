@@ -1,18 +1,18 @@
 export const mockedColumns = [
     {
-        columnId: 1,
+        columnId: 0,
         name: 'TODO'
     },
     {
-        columnId: 2,
+        columnId: 1,
         name: 'In progress'
     },
     {
-        columnId: 3,
+        columnId: 2,
         name: 'Waiting'
     },
     {
-        columnId: 4,
+        columnId: 3,
         name: 'Done'
     }
 ]
