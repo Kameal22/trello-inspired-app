@@ -24,12 +24,14 @@ const BoardList = ({numberOfBoards}) => {
         setOpen(!open);
     }
 
+    const boardsMapped = boards.map(board => (
+        <Grid item xs={4} sm={4} md={3} key={board.boardId}>
+            <BoardIcon {...board}/>
+        </Grid>))
+
     return (
         <Grid container spacing={{xs: 3, md: 10}} columns={{xs: 4, sm: 10, md: 12}} justify="center">
-            {boards.map(board => (
-                <Grid item xs={4} sm={4} md={3} key={board.boardId}>
-                    <BoardIcon {...board}/>
-                </Grid>))}
+            {boardsMapped}
             <Grid item xs={4} sm={4} md={3}>
                 <Card sx={{
                     height: 150,
