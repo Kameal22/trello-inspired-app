@@ -7,10 +7,10 @@ import TaskFormDialog from "../TaskFormDialog/TaskFormDialog";
 
 const Column = ({columnId, name}) => {
     const [tasks, setTasks] = useState(mockedTasks[columnId]);
-    const [open, setOpen] = useState(false);
+    const [formOpen, setFormOpen] = useState(false);
 
-    const toggleDialog = () => {
-        setOpen(!open)
+    const toggleFormDialog = () => {
+        setFormOpen(!formOpen);
     }
 
     const addNewTask = (title, description) => {
@@ -18,12 +18,12 @@ const Column = ({columnId, name}) => {
             taskId: tasks.length > 0 ? tasks[tasks.length - 1].taskId + 1 : 0,
             title: title,
             description: description
-        }
+        };
 
-        setTasks([...tasks, newTask])
+        setTasks([...tasks, newTask]);
     }
 
-    const mappedTasks = tasks.map(task => <Task key={task.taskId} {...task}/>);
+    const mappedTasks = tasks.map(task => <Task key={task.taskId} task={task}/>);
 
     return (
         <div style={{height: '100%', display: "flex", flexDirection: "column"}}>
@@ -31,12 +31,12 @@ const Column = ({columnId, name}) => {
             <div style={{backgroundColor: 'rgba(37,37,76,0.24)', flexGrow: 1}}>
                 {mappedTasks}
                 <Card sx={{margin: 2}}>
-                    <Button style={{width: '100%'}} onClick={toggleDialog}>
+                    <Button style={{width: '100%'}} onClick={toggleFormDialog}>
                         <AddIcon/>
                     </Button>
                 </Card>
             </div>
-            <TaskFormDialog open={open} toggleDialog={toggleDialog} addNewTask={addNewTask}/>
+            <TaskFormDialog open={formOpen} toggleDialog={toggleFormDialog} addNewTask={addNewTask}/>
         </div>
     );
 };

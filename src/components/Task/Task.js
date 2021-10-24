@@ -1,18 +1,26 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Card, CardContent, Divider, Typography} from "@mui/material";
+import TaskDetailsDialog from "../TaskDetailsDialog/TaskDetailsDialog";
 
-const Task = ({taskId, title, description, assignedTo}) => {
+const Task = ({task}) => {
+    const [detailsOpen, setDetailsOpen] = useState(false);
+
+    const toggleDetailsDialog = () => {
+        setDetailsOpen(!detailsOpen);
+    }
+
     return (
-        <Card sx={{backgroundColor: "rgb(62,60,60)", color: "white", margin: 2}}>
+        <Card sx={{backgroundColor: "rgb(62,60,60)", color: "white", margin: 2}} onClick={toggleDetailsDialog}>
             <CardContent>
                 <Typography gutterBottom variant="h5">
-                    {title}
+                    {task.title}
                 </Typography>
-                {description && (<><Divider sx={{background: "white"}}/>
+                {task.description && (<><Divider sx={{background: "white"}}/>
                     <Typography variant="p">
-                        {description}
+                        {task.description}
                     </Typography></>)}
             </CardContent>
+            <TaskDetailsDialog open={detailsOpen} toggleDialog={toggleDetailsDialog} task={task}/>
         </Card>
     );
 };
