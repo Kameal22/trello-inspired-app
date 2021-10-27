@@ -45,10 +45,8 @@ const TaskFormDialog = ({open, toggleDialog, addNewTask}) => {
                 </Box>
             </DialogContent>
             <DialogActions>
-                <DialogActions>
-                    <Button variant="outlined" onClick={closeDialog}>Cancel</Button>
-                    <Button variant="outlined" onClick={handleAddNewTask}>Add</Button>
-                </DialogActions>
+                <Button variant="outlined" onClick={closeDialog}>Cancel</Button>
+                <Button variant="outlined" onClick={handleAddNewTask}>Add</Button>
             </DialogActions>
         </Dialog>
     );
