@@ -6,7 +6,7 @@ import AddIcon from "@mui/icons-material/Add";
 import TaskFormDialog from "../TaskFormDialog/TaskFormDialog";
 import {Draggable} from "react-beautiful-dnd";
 
-const Column = ({columnId, name}) => {
+const Column = ({columnId, name, provided}) => {
     const [tasks, setTasks] = useState(mockedTasks[columnId]);
     const [formOpen, setFormOpen] = useState(false);
 
@@ -49,7 +49,10 @@ const Column = ({columnId, name}) => {
         <div style={{height: '100%', display: "flex", flexDirection: "column"}}>
             <Typography variant="h6">{name}</Typography>
             <div style={{backgroundColor: 'rgba(37,37,76,0.24)', flexGrow: 1, borderRadius: '10px'}}>
-                {mappedTasks}
+                <ul style={{listStyleType: "none", margin: 0, padding: 0}} {...provided.droppableProps} ref={provided.innerRef}>
+                    {mappedTasks}
+                    {provided.placeholder}
+                </ul>
                 <Card sx={{margin: 2}}>
                     <Button style={{width: '100%'}} onClick={toggleFormDialog}>
                         <AddIcon/>

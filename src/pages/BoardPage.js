@@ -14,10 +14,7 @@ const BoardPage = ({boardId}) => {
               xs={8} md={4} xl={2}>
             <Droppable droppableId={column.columnId.toString()}>
                 {provided => (
-                    <ul {...provided.droppableProps} ref={provided.innerRef} style={{listStyleType: "none"}}>
-                        <Column {...column}/>
-                        {provided.placeholder}
-                    </ul>
+                        <Column {...column} provided={provided}/>
                 )}
             </Droppable>
         </Grid>);
