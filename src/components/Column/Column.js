@@ -4,6 +4,7 @@ import {mockedTasks} from "../../data/mockedTasks";
 import Task from "../Task/Task";
 import AddIcon from "@mui/icons-material/Add";
 import TaskFormDialog from "../TaskFormDialog/TaskFormDialog";
+import {Draggable} from "react-beautiful-dnd";
 
 const Column = ({columnId, name}) => {
     const [tasks, setTasks] = useState(mockedTasks[columnId]);
@@ -33,10 +34,16 @@ const Column = ({columnId, name}) => {
         setTasks([...tasks, newTask]);
     }
 
-    const mappedTasks = tasks.map(task => <Task key={task.taskId}
-                                                task={task}
-                                                editTask={editTask}
-                                                deleteTask={deleteTask}/>);
+    const mappedTasks = tasks.map(task =>
+        <Draggable key={task.taskId} draggableId={task.taskId.toString()} index={task.taskId}>
+            {provided => (
+                <li {...provided.draggableProps} ref={provided.innerRef} {...provided.dragHandleProps}>
+                    <Task task={task}
+                          editTask={editTask}
+                          deleteTask={deleteTask}/>
+                </li>
+            )}
+        </Draggable>);
 
     return (
         <div style={{height: '100%', display: "flex", flexDirection: "column"}}>

@@ -26,7 +26,7 @@ const BoardFormDialog = ({open, toggleDialog, addNewBoard}) => {
             <DialogContent>
                 <Box component="form">
                     <TextField id="title"
-                               label="Board name"
+                               label="BoardPage name"
                                value={name}
                                onChange={updateName}
                                variant="outlined"

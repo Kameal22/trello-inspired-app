@@ -4,7 +4,7 @@ import AllBoardsPage from "./AllBoardsPage";
 import {Route} from "react-router-dom";
 import {Box} from "@mui/material";
 import YourBoardsPage from "./YourBoardsPage";
-import Board from "../components/Board/Board";
+import BoardPage from "./BoardPage";
 
 const MainPage = () => {
     return (
@@ -22,7 +22,7 @@ const MainPage = () => {
                     <Route exact path={"/:userId/boards"}
                            render={routeParams => <YourBoardsPage {...routeParams}/>}/>
                     <Route exact path={"/boards/:boardId"}
-                           render={routeParams => <Board boardId={routeParams.match.params.boardId}/>}/>
+                           render={routeParams => <BoardPage boardId={routeParams.match.params.boardId}/>}/>
                 </Box>
             </Box>
         </div>
