@@ -1,8 +1,9 @@
 import React from 'react';
 import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography} from "@mui/material";
 import useInputState from "../../hooks/useInputState";
+import DeleteIcon from '@mui/icons-material/Delete';
 
-const TaskDetailsDialog = ({open, toggleDialog, task, editTask}) => {
+const TaskDetailsDialog = ({open, toggleDialog, task, editTask, deleteTask}) => {
 
     const [title, updateTitle, resetTitle] = useInputState(task.title);
     const [description, updateDescription, resetDescription] = useInputState(task.description);
@@ -28,6 +29,7 @@ const TaskDetailsDialog = ({open, toggleDialog, task, editTask}) => {
         <Dialog open={open} onClose={closeDialog}>
             <DialogTitle>
                 {task.title}
+                <DeleteIcon style={{float: "right"}} onClick={() => deleteTask(task.taskId)}/>
             </DialogTitle>
             <DialogContent>
                 <Box component="form" onSubmit={handleEditingTask}>

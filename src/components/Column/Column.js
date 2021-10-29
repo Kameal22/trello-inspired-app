@@ -19,6 +19,10 @@ const Column = ({columnId, name}) => {
         setTasks(editedTasks);
     }
 
+    const deleteTask = id => {
+        setTasks(tasks.filter(task => task.taskId !== id));
+    }
+
     const addNewTask = (title, description) => {
         const newTask = {
             taskId: tasks.length > 0 ? tasks[tasks.length - 1].taskId + 1 : 0,
@@ -29,7 +33,10 @@ const Column = ({columnId, name}) => {
         setTasks([...tasks, newTask]);
     }
 
-    const mappedTasks = tasks.map(task => <Task key={task.taskId} task={task} editTask={editTask}/>);
+    const mappedTasks = tasks.map(task => <Task key={task.taskId}
+                                                task={task}
+                                                editTask={editTask}
+                                                deleteTask={deleteTask}/>);
 
     return (
         <div style={{height: '100%', display: "flex", flexDirection: "column"}}>
