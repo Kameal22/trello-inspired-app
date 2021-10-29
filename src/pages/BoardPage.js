@@ -16,6 +16,7 @@ const BoardPage = ({boardId}) => {
                 {provided => (
                     <ul {...provided.droppableProps} ref={provided.innerRef} style={{listStyleType: "none"}}>
                         <Column {...column}/>
+                        {provided.placeholder}
                     </ul>
                 )}
             </Droppable>

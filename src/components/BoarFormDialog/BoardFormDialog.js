@@ -3,7 +3,7 @@ import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextFiel
 import useInputState from "../../hooks/useInputState";
 
 const BoardFormDialog = ({open, toggleDialog, addNewBoard}) => {
-    const [name, updateName, resetName] = useInputState("");
+    const [name, updateName, resetName, nameError, setNameError] = useInputState("");
     const [description, updateDescription, resetDescription] = useInputState("");
 
     const closeDialog = () => {
@@ -13,9 +13,24 @@ const BoardFormDialog = ({open, toggleDialog, addNewBoard}) => {
     }
 
     //TODO: handle getting response if board was successfully added
-    const handleAddNewBoard = () => {
+    const handleAddNewBoard = e => {
+        e.preventDefault();
+        if (!name) {
+            setNameError(true);
+            return;
+        }
+
+        setNameError(false);
         addNewBoard(name, description);
         closeDialog();
+    }
+
+    const handleChangeName = e => {
+        updateName(e);
+
+        if (nameError && name) {
+            setNameError(false);
+        }
     }
 
     return (
@@ -24,16 +39,17 @@ const BoardFormDialog = ({open, toggleDialog, addNewBoard}) => {
                 Add new board
             </DialogTitle>
             <DialogContent>
-                <Box component="form">
+                <Box component="form" onSubmit={handleAddNewBoard}>
                     <TextField id="title"
-                               label="BoardPage name"
+                               label="Name"
                                value={name}
-                               onChange={updateName}
+                               onChange={handleChangeName}
                                variant="outlined"
                                fullWidth
                                autoComplete="off"
                                margin="normal"
-                               autoFocus/>
+                               autoFocus
+                               error={nameError}/>
                     <TextField id="description"
                                label="Description"
                                value={description}

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
 import useInputState from "../../hooks/useInputState";
 
@@ -15,7 +15,7 @@ const TaskFormDialog = ({open, toggleDialog, addNewTask}) => {
     const handleChangeTitle = e => {
         updateTitle(e);
 
-        if(titleError && title) {
+        if (titleError && title) {
             setTitleError(false);
         }
     }
@@ -23,7 +23,7 @@ const TaskFormDialog = ({open, toggleDialog, addNewTask}) => {
     //TODO: handle getting response if board was successfully added
     const handleAddNewTask = e => {
         e.preventDefault()
-        if(!title) {
+        if (!title) {
             setTitleError(true);
             return;
         }
