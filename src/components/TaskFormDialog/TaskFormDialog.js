@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
 import useInputState from "../../hooks/useInputState";
 
 const TaskFormDialog = ({open, toggleDialog, addNewTask}) => {
-    const [title, updateTitle, resetTitle] = useInputState("");
+    const [title, updateTitle, resetTitle, titleError, setTitleError] = useInputState("");
     const [description, updateDescription, resetDescription] = useInputState("");
 
     const closeDialog = () => {
@@ -12,9 +12,23 @@ const TaskFormDialog = ({open, toggleDialog, addNewTask}) => {
         toggleDialog();
     }
 
+    const handleChangeTitle = e => {
+        updateTitle(e);
+
+        if(titleError && title) {
+            setTitleError(false);
+        }
+    }
+
     //TODO: handle getting response if board was successfully added
     const handleAddNewTask = e => {
         e.preventDefault()
+        if(!title) {
+            setTitleError(true);
+            return;
+        }
+
+        setTitleError(false);
         addNewTask(title, description);
         closeDialog();
     }
@@ -29,12 +43,13 @@ const TaskFormDialog = ({open, toggleDialog, addNewTask}) => {
                     <TextField id="title"
                                label="Title"
                                value={title}
-                               onChange={updateTitle}
+                               onChange={handleChangeTitle}
                                variant="outlined"
                                fullWidth
                                autoComplete="off"
                                margin="normal"
-                               autoFocus/>
+                               autoFocus
+                               error={titleError}/>
                     <TextField id="description"
                                label="Description"
                                value={description}
