@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Card, CardContent, Divider, Typography} from "@mui/material";
 import TaskDetailsDialog from "../TaskDetailsDialog/TaskDetailsDialog";
 
-const Task = ({task, editTask, deleteTask}) => {
+const Task = ({task, editTask, deleteTask, columnId}) => {
     const [detailsOpen, setDetailsOpen] = useState(false);
 
     const toggleDetailsDialog = () => {
@@ -30,7 +30,8 @@ const Task = ({task, editTask, deleteTask}) => {
                                toggleDialog={toggleDetailsDialog}
                                task={task}
                                editTask={editTask}
-                               deleteTask={deleteTask}/>
+                               deleteTask={deleteTask}
+                               columnId={columnId}/>
         </Card>
     );
 };

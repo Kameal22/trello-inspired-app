@@ -1,18 +1,63 @@
 export const mockedColumns = [
     {
         columnId: 0,
-        name: 'TODO'
+        name: 'TODO',
+        tasks:
+            [
+                {
+                    taskId: 1,
+                    title: "Do this",
+                    description: "Just do it",
+                    assignedTo: "Łukasz"
+                },
+                {
+                    taskId: 2,
+                    title: "Do this also",
+                    description: "Please do it",
+                    assignedTo: "Łukasz"
+                },
+                {
+                    taskId: 3,
+                    title: "And do this",
+                    description: "",
+                    assignedTo: "Katarzyna"
+                }
+            ]
     },
     {
         columnId: 1,
-        name: 'In progress'
+        name: 'In progress',
+        tasks:
+            [
+                {
+                    taskId: 4,
+                    title: "Task in progress",
+                    description: "Just do it",
+                    assignedTo: "Paweł"
+                }
+            ]
     },
     {
         columnId: 2,
-        name: 'Waiting'
+        name: 'Waiting',
+        tasks: []
     },
     {
         columnId: 3,
-        name: 'Done'
+        name: 'Done',
+        tasks: [
+            {
+                taskId: 5,
+                title: "Well done",
+                description: "You did great",
+                assignedTo: "Martyna"
+            },
+            {
+                taskId: 6,
+                title: "You also did well",
+                description: "Nice",
+                assignedTo: "Łukasz"
+            }
+        ]
     }
 ]

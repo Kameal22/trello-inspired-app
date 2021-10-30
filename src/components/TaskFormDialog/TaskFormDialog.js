@@ -2,7 +2,7 @@ import React from 'react';
 import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
 import useInputState from "../../hooks/useInputState";
 
-const TaskFormDialog = ({open, toggleDialog, addNewTask}) => {
+const TaskFormDialog = ({open, toggleDialog, addNewTask, columnId}) => {
     const [title, updateTitle, resetTitle, titleError, setTitleError] = useInputState("");
     const [description, updateDescription, resetDescription] = useInputState("");
 
@@ -29,7 +29,7 @@ const TaskFormDialog = ({open, toggleDialog, addNewTask}) => {
         }
 
         setTitleError(false);
-        addNewTask(title, description);
+        addNewTask(title, description, columnId);
         closeDialog();
     }
 
