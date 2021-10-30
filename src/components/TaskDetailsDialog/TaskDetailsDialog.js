@@ -5,16 +5,31 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 const TaskDetailsDialog = ({open, toggleDialog, task, editTask, deleteTask, columnId}) => {
 
-    const [title, updateTitle, resetTitle] = useInputState(task.title);
+    const [title, updateTitle, resetTitle, titleError, setTitleError] = useInputState(task.title);
     const [description, updateDescription, resetDescription] = useInputState(task.description);
     const [assignedTo, updateAssignedTo, resetAssignedTo] = useInputState(task.assignedTo);
 
     const closeDialog = () => {
+        resetTitle();
+        resetDescription();
         toggleDialog();
+    }
+
+    const handleChangeTitle = e => {
+        updateTitle(e);
+
+        if (titleError && title) {
+            setTitleError(false);
+        }
     }
 
     const handleEditingTask = e => {
         e.preventDefault();
+        if (!title) {
+            setTitleError(true);
+            return;
+        }
+
         const editedTask = {
             taskId: task.taskId,
             title: title,
@@ -36,12 +51,13 @@ const TaskDetailsDialog = ({open, toggleDialog, task, editTask, deleteTask, colu
                     <TextField id="title"
                                label="Title"
                                value={title}
-                               onChange={updateTitle}
+                               onChange={handleChangeTitle}
                                variant="outlined"
                                fullWidth
                                autoComplete="off"
                                margin="normal"
-                               autoFocus/>
+                               autoFocus
+                               error={titleError}/>
                     <TextField id="description"
                                label="Description"
                                value={description}
