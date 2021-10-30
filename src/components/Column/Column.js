@@ -12,10 +12,20 @@ const Column = ({columnId, name, provided, tasks, editTask, addNewTask, deleteTa
         setFormOpen(!formOpen);
     }
 
+    function getAnimation(style, snapshot) {
+        if (!snapshot.isDropAnimating) {
+            return style;
+        }
+        return {
+            ...style,
+            transitionDuration: `0.1s`,
+        };
+    }
+
     const mappedTasks = tasks.map((task, index) =>
         <Draggable key={task.taskId} draggableId={task.taskId.toString()} index={index}>
-            {provided => (
-                <li {...provided.draggableProps} ref={provided.innerRef} {...provided.dragHandleProps}>
+            {(provided, snapshot) => (
+                <li {...provided.draggableProps} ref={provided.innerRef} {...provided.dragHandleProps} style={getAnimation(provided.draggableProps.style, snapshot)}>
                     <Task task={task}
                           editTask={editTask}
                           deleteTask={deleteTask}
