@@ -36,8 +36,7 @@ const BoardList = ({numberOfBoards}) => {
                 <Card sx={{
                     height: 150,
                     display: 'flex',
-                    justifyContent: 'center',
-                    backgroundColor: 'rgba(217,217,252,0.44)'
+                    justifyContent: 'center'
                 }}>
                     <Button style={{width: '100%'}} onClick={toggleDialog}>
                         <AddIcon/>
