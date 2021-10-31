@@ -4,9 +4,24 @@ import {mockedColumns} from "../data/mockedColumns";
 import Column from "../components/Column/Column";
 import {DragDropContext, Droppable} from "react-beautiful-dnd";
 import {v4 as uuidv4} from 'uuid';
+import DeleteIcon from "@mui/icons-material/Delete";
+import {useHistory} from "react-router-dom";
+import ConfirmDeleteBoardDialog from "../components/ConfirmDeleteBoardDialog/ConfirmDeleteBoardDialog";
+
+const deleteIconStyle = {
+    float: "right",
+    cursor: "pointer",
+    fontSize: 50
+};
 
 const BoardPage = ({boardId}) => {
     const [columns, setColumns] = useState(mockedColumns);
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const history = useHistory();
+
+    const toggleDeleteDialog = () => {
+        setDeleteDialogOpen(!deleteDialogOpen);
+    }
 
     const handleDroppingTask = result => {
         const {source, destination} = result;
@@ -84,6 +99,10 @@ const BoardPage = ({boardId}) => {
         setColumns(columns.map(column => column.columnId === columnId ? {...column, tasks} : column))
     }
 
+    const handleDeleteBoard = () => {
+        history.push("/all-boards");
+    }
+
     const columnItems = columns.map(column =>
         <Grid key={column.columnId}
               style={{marginLeft: 15}}
@@ -102,13 +121,23 @@ const BoardPage = ({boardId}) => {
 
     return (
         <div style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
+            <div>
+                <Typography variant="h3" style={{height: '10%'}}>
+                    Hello! You are on board with board id {boardId}
+                </Typography>
+                <DeleteIcon style={deleteIconStyle} onClick={toggleDeleteDialog}/>
+            </div>
             <DragDropContext onDragEnd={handleDroppingTask}>
-                <Typography variant="h3" style={{height: '10%'}}>Hello! You are on board with board
-                    id {boardId}</Typography>
                 <Grid container style={{flexGrow: 1}} wrap="nowrap">
                     {columnItems}
                 </Grid>
             </DragDropContext>
+            <ConfirmDeleteBoardDialog
+                open={deleteDialogOpen}
+                deleteBoard={handleDeleteBoard}
+                toggleDialog={toggleDeleteDialog}
+                boardId={boardId}
+            />
         </div>
     );
 };
