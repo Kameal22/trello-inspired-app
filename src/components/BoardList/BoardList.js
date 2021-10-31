@@ -5,6 +5,12 @@ import AddIcon from "@mui/icons-material/Add";
 import {mockedBoards} from "../../data/mockedBoards";
 import BoardFormDialog from "../BoarFormDialog/BoardFormDialog";
 
+const addButtonStyle = {
+    height: 150,
+    display: 'flex',
+    justifyContent: 'center'
+};
+
 const BoardList = ({numberOfBoards}) => {
     const [boards, setBoards] = useState(mockedBoards.slice(0, numberOfBoards));
     const [open, setOpen] = useState(false);
@@ -33,11 +39,7 @@ const BoardList = ({numberOfBoards}) => {
         <Grid container spacing={{xs: 3, md: 10}} columns={{xs: 4, sm: 10, md: 12}} justify="center">
             {boardsMapped}
             <Grid item xs={4} sm={4} md={3}>
-                <Card sx={{
-                    height: 150,
-                    display: 'flex',
-                    justifyContent: 'center'
-                }}>
+                <Card sx={addButtonStyle}>
                     <Button style={{width: '100%'}} onClick={toggleDialog}>
                         <AddIcon/>
                     </Button>

@@ -5,6 +5,18 @@ import AddIcon from "@mui/icons-material/Add";
 import TaskFormDialog from "../TaskFormDialog/TaskFormDialog";
 import {Draggable} from "react-beautiful-dnd";
 
+const outsideColumnStyle = {
+    height: '100%',
+    display: "flex",
+    flexDirection: "column"
+};
+
+const insideColumnStyle = {
+    backgroundColor: 'rgba(37,37,76,0.24)',
+    flexGrow: 1,
+    borderRadius: '10px'
+};
+
 const Column = ({columnId, name, provided, tasks, editTask, addNewTask, deleteTask}) => {
     const [formOpen, setFormOpen] = useState(false);
 
@@ -25,7 +37,8 @@ const Column = ({columnId, name, provided, tasks, editTask, addNewTask, deleteTa
     const mappedTasks = tasks.map((task, index) =>
         <Draggable key={task.taskId} draggableId={task.taskId.toString()} index={index}>
             {(provided, snapshot) => (
-                <li {...provided.draggableProps} ref={provided.innerRef} {...provided.dragHandleProps} style={getAnimation(provided.draggableProps.style, snapshot)}>
+                <li {...provided.draggableProps} ref={provided.innerRef} {...provided.dragHandleProps}
+                    style={getAnimation(provided.draggableProps.style, snapshot)}>
                     <Task task={task}
                           editTask={editTask}
                           deleteTask={deleteTask}
@@ -35,12 +48,10 @@ const Column = ({columnId, name, provided, tasks, editTask, addNewTask, deleteTa
         </Draggable>);
 
     return (
-        <div style={{height: '100%', display: "flex", flexDirection: "column"}}>
+        <div style={outsideColumnStyle}>
             <Typography variant="h6">{name}</Typography>
-            <div style={{backgroundColor: 'rgba(37,37,76,0.24)', flexGrow: 1, borderRadius: '10px'}}>
-                <ul style={{listStyleType: "none", margin: 0, padding: 0}}
-                    {...provided.droppableProps}
-                    ref={provided.innerRef}>
+            <div style={insideColumnStyle}>
+                <ul {...provided.droppableProps} ref={provided.innerRef}>
                     {mappedTasks}
                     {provided.placeholder}
                 </ul>

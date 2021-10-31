@@ -12,30 +12,29 @@ const useStyles = makeStyles({
     }
 })
 
+const drawerStyles = {
+    width: '15%',
+    flexShrink: 0,
+    '& .MuiDrawer-paper': {
+        boxSizing: 'border-box',
+        width: '15%'
+    }
+}
+
 const Sidebar = () => {
     const styles = useStyles();
     return (
-        <Drawer
-            sx={{
-                width: '15%',
-                flexShrink: 0,
-                '& .MuiDrawer-paper': {
-                    boxSizing: 'border-box',
-                    width: '15%'
-                },
-            }}
-            variant="permanent"
-            anchor="left"
-            classes={{paper: styles.paper}}
-        >
+        <Drawer sx={drawerStyles} variant="permanent" anchor="left" classes={{paper: styles.paper}}>
             <Toolbar>
                 {/*TODO: add real username from jwt*/}
                 <Typography style={{color: "#050079"}} variant="h5">Hello {mockedUsername}!</Typography>
             </Toolbar>
             <Divider/>
             <List>
-                <ListItem button key={"All boards"} component={NavLink}
-                          exact to={"/all-boards"} activeClassName="active-link">
+                <ListItem button key={"All boards"}
+                          component={NavLink}
+                          exact to={"/all-boards"}
+                          activeClassName="active-link">
                     <ListItemText primary={"All boards"}/>
                 </ListItem>
                 {/*TODO insert user id here*/}
