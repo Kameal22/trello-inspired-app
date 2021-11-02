@@ -1,17 +1,30 @@
 import React from 'react';
-import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography} from "@mui/material";
+import {
+    Box,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Select,
+    TextField
+} from "@mui/material";
 import useInputState from "../../hooks/useInputState";
 import DeleteIcon from '@mui/icons-material/Delete';
+import {v4 as uuidv4} from 'uuid';
 
-const TaskDetailsDialog = ({open, toggleDialog, task, editTask, deleteTask, columnId}) => {
-
+const TaskDetailsDialog = ({open, toggleDialog, task, editTask, deleteTask, columnId, boardMembers}) => {
     const [title, updateTitle, resetTitle, titleError, setTitleError] = useInputState(task.title);
     const [description, updateDescription, resetDescription] = useInputState(task.description);
     const [assignedTo, updateAssignedTo, resetAssignedTo] = useInputState(task.assignedTo);
 
     const closeDialog = () => {
-        resetTitle();
-        resetDescription();
+        resetTitle(task.title);
+        resetDescription(task.description);
+        resetAssignedTo(task.assignedTo);
         toggleDialog();
     }
 
@@ -34,11 +47,16 @@ const TaskDetailsDialog = ({open, toggleDialog, task, editTask, deleteTask, colu
             taskId: task.taskId,
             title: title,
             description: description,
-            assignedTo: assignedTo
+            assignedTo: assignedTo !== '' ? assignedTo : null
         };
         editTask(editedTask, columnId);
-        closeDialog();
+        toggleDialog();
     }
+
+    const boardMembersMenuItems = boardMembers.map(boardMember =>
+        <MenuItem value={boardMember} key={uuidv4()}>
+            {boardMember}
+        </MenuItem>);
 
     return (
         <Dialog open={open} onClose={closeDialog}>
@@ -65,7 +83,18 @@ const TaskDetailsDialog = ({open, toggleDialog, task, editTask, deleteTask, colu
                                multiline fullWidth
                                autoComplete="off"
                                margin="normal" rows={2}/>
-                    <Typography>Assigned to: {assignedTo}</Typography>
+                    <FormControl margin="normal" fullWidth>
+                        <InputLabel id="assigned-to">Assigned to</InputLabel>
+                        <Select labelId="assigned-to"
+                                label="Assigned to"
+                                value={assignedTo == null ? '' : assignedTo}
+                                onChange={updateAssignedTo}>
+                            <MenuItem value={''}>
+                                <em>None</em>
+                            </MenuItem>
+                            {boardMembersMenuItems}
+                        </Select>
+                    </FormControl>
                 </Box>
             </DialogContent>
             <DialogActions>

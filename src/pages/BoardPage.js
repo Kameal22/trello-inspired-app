@@ -18,6 +18,7 @@ const BoardPage = ({boardId}) => {
     const [columns, setColumns] = useState(mockedColumns);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const history = useHistory();
+    const boardMembers = ["Łukasz", "Katarzyna", "Martyna", "Tadziu"]
 
     const toggleDeleteDialog = () => {
         setDeleteDialogOpen(!deleteDialogOpen);
@@ -114,7 +115,8 @@ const BoardPage = ({boardId}) => {
                             provided={provided}
                             editTask={editTask}
                             addNewTask={addNewTask}
-                            deleteTask={deleteTask}/>
+                            deleteTask={deleteTask}
+                            boardMembers={boardMembers}/>
                 )}
             </Droppable>
         </Grid>);

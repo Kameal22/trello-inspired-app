@@ -8,8 +8,12 @@ const useInputState = initialValue => {
         setValue(e.target.value);
     };
 
-    const reset = () => {
-        setValue("");
+    const reset = oldValue => {
+        if (oldValue) {
+            setValue(oldValue);
+        } else {
+            setValue("");
+        }
     }
 
     return [value, handleChange, reset, error, setError];

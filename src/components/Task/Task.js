@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
-import {Card, CardContent, Divider, Typography} from "@mui/material";
+import {Avatar, Card, CardContent, Divider, Typography} from "@mui/material";
 import TaskDetailsDialog from "../TaskDetailsDialog/TaskDetailsDialog";
 
 
-const Task = ({task, editTask, deleteTask, columnId, isDragging}) => {
+const Task = ({task, editTask, deleteTask, columnId, isDragging, boardMembers}) => {
+    const hasAssignee = task.assignedTo != null && task.assignedTo !== '';
     const [detailsOpen, setDetailsOpen] = useState(false);
 
     const toggleDetailsDialog = () => {
@@ -16,6 +17,10 @@ const Task = ({task, editTask, deleteTask, columnId, isDragging}) => {
         }
     }
 
+    const getNameFirstLetter = () => {
+        return task.assignedTo.charAt(0);
+    }
+
     const taskCardStyle = {
         backgroundColor: isDragging ? "rgba(62,60,60,0.85)" : "rgba(62,60,60)",
         color: "white",
@@ -25,9 +30,14 @@ const Task = ({task, editTask, deleteTask, columnId, isDragging}) => {
     return (
         <Card sx={taskCardStyle} onClick={openDialog}>
             <CardContent>
-                <Typography gutterBottom variant="h5">
-                    {task.title}
-                </Typography>
+                <div style={{width: "100%"}}>
+                    <Typography gutterBottom variant="h5">
+                        {task.title}
+                    </Typography>
+                    {hasAssignee && <Avatar style={{float: "right", margin: 5, backgroundColor: "#1976d2"}}>
+                        {getNameFirstLetter()}
+                    </Avatar>}
+                </div>
                 {task.description && (
                     <>
                         <Divider sx={{background: "white"}}/>
@@ -41,7 +51,8 @@ const Task = ({task, editTask, deleteTask, columnId, isDragging}) => {
                                task={task}
                                editTask={editTask}
                                deleteTask={deleteTask}
-                               columnId={columnId}/>
+                               columnId={columnId}
+                               boardMembers={boardMembers}/>
         </Card>
     );
 };

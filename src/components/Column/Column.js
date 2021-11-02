@@ -17,7 +17,7 @@ const insideColumnStyle = {
     borderRadius: '10px'
 };
 
-const Column = ({columnId, name, provided, tasks, editTask, addNewTask, deleteTask}) => {
+const Column = ({columnId, name, provided, tasks, editTask, addNewTask, deleteTask, boardMembers}) => {
     const [formOpen, setFormOpen] = useState(false);
 
     const toggleFormDialog = () => {
@@ -43,7 +43,8 @@ const Column = ({columnId, name, provided, tasks, editTask, addNewTask, deleteTa
                           editTask={editTask}
                           deleteTask={deleteTask}
                           columnId={columnId}
-                          isDragging={snapshot.isDragging}/>
+                          isDragging={snapshot.isDragging}
+                          boardMembers={boardMembers}/>
                 </li>
             )}
         </Draggable>);

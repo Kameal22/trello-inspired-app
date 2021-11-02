@@ -14,7 +14,7 @@ export const mockedColumns = [
                     taskId: 2,
                     title: "Do this also",
                     description: "Please do it",
-                    assignedTo: "Łukasz"
+                    assignedTo: null
                 },
                 {
                     taskId: 3,
@@ -33,7 +33,7 @@ export const mockedColumns = [
                     taskId: 4,
                     title: "Task in progress",
                     description: "Just do it",
-                    assignedTo: "Paweł"
+                    assignedTo: null
                 }
             ]
     },
