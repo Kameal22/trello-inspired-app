@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
+import {Button, Dialog, DialogActions, DialogTitle} from "@mui/material";
 
 const ConfirmDeleteBoardDialog = ({open, toggleDialog, boardId, deleteBoard}) => {
     return (

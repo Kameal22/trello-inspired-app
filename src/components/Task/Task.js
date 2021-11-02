@@ -2,13 +2,8 @@ import React, {useState} from 'react';
 import {Card, CardContent, Divider, Typography} from "@mui/material";
 import TaskDetailsDialog from "../TaskDetailsDialog/TaskDetailsDialog";
 
-const taskCardStyle = {
-    backgroundColor: "rgb(62,60,60)",
-    color: "white",
-    margin: 2
-};
 
-const Task = ({task, editTask, deleteTask, columnId}) => {
+const Task = ({task, editTask, deleteTask, columnId, isDragging}) => {
     const [detailsOpen, setDetailsOpen] = useState(false);
 
     const toggleDetailsDialog = () => {
@@ -20,6 +15,12 @@ const Task = ({task, editTask, deleteTask, columnId}) => {
             setDetailsOpen(true);
         }
     }
+
+    const taskCardStyle = {
+        backgroundColor: isDragging ? "rgba(62,60,60,0.85)" : "rgba(62,60,60)",
+        color: "white",
+        margin: 2
+    };
 
     return (
         <Card sx={taskCardStyle} onClick={openDialog}>

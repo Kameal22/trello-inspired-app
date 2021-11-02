@@ -42,7 +42,8 @@ const Column = ({columnId, name, provided, tasks, editTask, addNewTask, deleteTa
                     <Task task={task}
                           editTask={editTask}
                           deleteTask={deleteTask}
-                          columnId={columnId}/>
+                          columnId={columnId}
+                          isDragging={snapshot.isDragging}/>
                 </li>
             )}
         </Draggable>);
