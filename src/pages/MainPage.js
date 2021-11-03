@@ -3,8 +3,8 @@ import Sidebar from "../components/Sidebar/Sidebar";
 import AllBoardsPage from "./AllBoardsPage";
 import {Route} from "react-router-dom";
 import {Box} from "@mui/material";
-import YourBoardsPage from "./YourBoardsPage";
 import BoardPage from "./BoardPage";
+import ManageBoardsPage from "./ManageBoardsPage";
 
 const MainPage = () => {
     return (
@@ -20,7 +20,7 @@ const MainPage = () => {
                     {/*background: 'linear-gradient(45deg, rgba(4,0,64,1) 0%, rgba(233,233,233,0.3519782913165266) 27%, rgba(207,207,207,1) 100%)'*/}
                     <Route exact path={"/all-boards"} component={AllBoardsPage}/>
                     <Route exact path={"/:userId/boards"}
-                           render={routeParams => <YourBoardsPage {...routeParams}/>}/>
+                           render={routeParams => <ManageBoardsPage {...routeParams}/>}/>
                     <Route exact path={"/boards/:boardId"}
                            render={routeParams => <BoardPage boardId={routeParams.match.params.boardId}/>}/>
                 </Box>
