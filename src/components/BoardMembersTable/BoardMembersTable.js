@@ -1,5 +1,6 @@
 import React from 'react';
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
+import "./BoardMemberTable.css"
 
 const BoardMembersTable = ({users}) => {
     const userRows = users.map(user =>
@@ -10,8 +11,8 @@ const BoardMembersTable = ({users}) => {
         </TableRow>)
 
     return (
-        <TableContainer>
-            <Table>
+        <TableContainer className="board">
+            <Table >
                 <TableHead>
                     <TableCell>Name</TableCell>
                     <TableCell>Number of tasks</TableCell>

@@ -3,14 +3,21 @@ import {Accordion, AccordionDetails, AccordionSummary, Typography} from "@mui/ma
 import {ExpandMoreOutlined} from "@mui/icons-material";
 import BoardMembersTable from "../BoardMembersTable/BoardMembersTable";
 
+const boardAccordionStyle = {
+    backgroundColor: "rgba(62,60,60)",
+    color: "white",
+    marginBottom: 50
+}
+
 const BoardAccordion = ({name, users}) => {
     return (
-        <Accordion>
+        <Accordion style={boardAccordionStyle}>
             <AccordionSummary expandIcon={<ExpandMoreOutlined/>}>
-                <Typography>{name}</Typography>
+                <Typography gutterBottom variant="h5">{name}</Typography>
             </AccordionSummary>
-            <AccordionDetails>
-                <BoardMembersTable users={users}/>
+            <AccordionDetails style={{color: "white"}}>
+                {users.length > 0 ?
+                    <BoardMembersTable users={users}/> : <Typography>You are the only member</Typography>}
             </AccordionDetails>
         </Accordion>
     );

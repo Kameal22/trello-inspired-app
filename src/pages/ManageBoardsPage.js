@@ -15,7 +15,7 @@ const ManageBoardsPage = () => {
     return (
         <div>
             <Typography variant="h2" style={boardsPageStyle}>Manage boards:</Typography>
-            {boardAccordions}
+                {boardAccordions}
         </div>
     );
 };
