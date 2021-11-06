@@ -62,7 +62,7 @@ const TaskDetailsDialog = ({open, toggleDialog, task, editTask, deleteTask, colu
         <Dialog open={open} onClose={closeDialog}>
             <DialogTitle>
                 {task.title}
-                <DeleteIcon style={{float: "right"}} onClick={() => deleteTask(task.taskId, columnId)}/>
+                <DeleteIcon style={{float: "right", cursor: "pointer"}} onClick={() => deleteTask(task.taskId, columnId)}/>
             </DialogTitle>
             <DialogContent>
                 <Box component="form" onSubmit={handleEditingTask}>

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Grid, Typography} from "@mui/material";
+import {Alert, Grid, Snackbar, Typography} from "@mui/material";
 import {mockedColumns} from "../data/mockedColumns";
 import Column from "../components/Column/Column";
 import {DragDropContext, Droppable} from "react-beautiful-dnd";
@@ -16,6 +16,11 @@ const deleteIconStyle = {
 
 const BoardPage = ({boardId}) => {
     const [columns, setColumns] = useState(mockedColumns);
+    const [snackbar, setSnackbar] = useState({
+        open: false,
+        type: "info",
+        message: ""
+    });
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const history = useHistory();
     const boardMembers = ["Łukasz", "Katarzyna", "Martyna", "Tadziu"]
@@ -81,12 +86,24 @@ const BoardPage = ({boardId}) => {
         let tasks = columns.find(column => column.columnId === columnId).tasks;
         const editedTasks = tasks.map(task => task.taskId === editedTask.taskId ? editedTask : task);
         setColumns(columns.map(column => column.columnId === columnId ? {...column, tasks: editedTasks} : column))
+
+        setSnackbar({
+            open: true,
+            type: "info",
+            message: "Task edited"
+        })
     }
 
     const deleteTask = (taskId, columnId) => {
         let tasks = columns.find(column => column.columnId === columnId).tasks;
         tasks = tasks.filter(task => task.taskId !== taskId);
         setColumns(columns.map(column => column.columnId === columnId ? {...column, tasks} : column));
+
+        setSnackbar({
+            open: true,
+            type: "error",
+            message: "Task deleted"
+        })
     }
 
     const addNewTask = (title, description, columnId) => {
@@ -98,10 +115,24 @@ const BoardPage = ({boardId}) => {
         };
         tasks = [...tasks, newTask];
         setColumns(columns.map(column => column.columnId === columnId ? {...column, tasks} : column))
+
+        setSnackbar({
+            open: true,
+            type: "success",
+            message: "Task added"
+        })
     }
 
     const handleDeleteBoard = () => {
         history.push("/all-boards");
+    }
+
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setSnackbar({...snackbar, open: false});
     }
 
     const columnItems = columns.map(column =>
@@ -140,6 +171,11 @@ const BoardPage = ({boardId}) => {
                 toggleDialog={toggleDeleteDialog}
                 boardId={boardId}
             />
+            <Snackbar open={snackbar.open} autoHideDuration={3000} onClose={handleSnackbarClose}>
+                <Alert onClose={handleSnackbarClose} severity={snackbar.type} sx={{width: '100%'}}>
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
         </div>
     );
 };
