@@ -1,7 +1,7 @@
 import React from 'react';
 import {Accordion, AccordionDetails, AccordionSummary, Typography} from "@mui/material";
 import {ExpandMoreOutlined} from "@mui/icons-material";
-import BoardMembersTable from "../BoardMembersTable/BoardMembersTable";
+import BoardMembersTable from "./BoardMembersTable";
 
 const boardAccordionStyle = {
     backgroundColor: "rgba(62,60,60)",
@@ -9,7 +9,7 @@ const boardAccordionStyle = {
     marginBottom: 50
 }
 
-const BoardAccordion = ({name, users}) => {
+const BoardAccordion = ({name, users, boardId, addAdminRights}) => {
     return (
         <Accordion style={boardAccordionStyle}>
             <AccordionSummary expandIcon={<ExpandMoreOutlined/>}>
@@ -17,7 +17,8 @@ const BoardAccordion = ({name, users}) => {
             </AccordionSummary>
             <AccordionDetails style={{color: "white"}}>
                 {users.length > 0 ?
-                    <BoardMembersTable users={users}/> : <Typography>You are the only member</Typography>}
+                    <BoardMembersTable users={users} boardId={boardId} addAdminRights={addAdminRights}/> :
+                    <Typography>You are the only member</Typography>}
             </AccordionDetails>
         </Accordion>
     );
