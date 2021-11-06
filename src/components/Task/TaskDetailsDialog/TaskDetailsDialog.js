@@ -12,7 +12,7 @@ import {
     Select,
     TextField
 } from "@mui/material";
-import useInputState from "../../hooks/useInputState";
+import useInputState from "../../../hooks/useInputState";
 import DeleteIcon from '@mui/icons-material/Delete';
 import {v4 as uuidv4} from 'uuid';
 

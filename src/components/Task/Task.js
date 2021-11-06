@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Avatar, Card, CardContent, Divider, Typography} from "@mui/material";
-import TaskDetailsDialog from "../TaskDetailsDialog/TaskDetailsDialog";
+import TaskDetailsDialog from "./TaskDetailsDialog/TaskDetailsDialog";
 
 
 const Task = ({task, editTask, deleteTask, columnId, isDragging, boardMembers}) => {
@@ -38,9 +38,9 @@ const Task = ({task, editTask, deleteTask, columnId, isDragging, boardMembers}) 
                         {getNameFirstLetter()}
                     </Avatar>}
                 </div>
+                <Divider sx={{background: "white"}}/>
                 {task.description && (
                     <>
-                        <Divider sx={{background: "white"}}/>
                         <Typography variant="p">
                             {task.description}
                         </Typography>

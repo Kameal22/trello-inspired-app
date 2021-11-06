@@ -1,6 +1,6 @@
 import React from 'react';
 import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
-import useInputState from "../../hooks/useInputState";
+import useInputState from "../../../hooks/useInputState";
 
 const BoardFormDialog = ({open, toggleDialog, addNewBoard}) => {
     const [name, updateName, resetName, nameError, setNameError] = useInputState("");

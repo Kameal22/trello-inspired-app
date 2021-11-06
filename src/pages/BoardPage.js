@@ -6,7 +6,7 @@ import {DragDropContext, Droppable} from "react-beautiful-dnd";
 import {v4 as uuidv4} from 'uuid';
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useHistory} from "react-router-dom";
-import ConfirmDeleteBoardDialog from "../components/ConfirmDeleteBoardDialog/ConfirmDeleteBoardDialog";
+import ConfirmDeleteBoardDialog from "../components/Board/ConfirmDeleteBoardDialog/ConfirmDeleteBoardDialog";
 
 const deleteIconStyle = {
     float: "right",

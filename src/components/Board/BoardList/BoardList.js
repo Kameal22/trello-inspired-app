@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import {Button, Card, Grid} from "@mui/material";
 import BoardIcon from "../BoardIcon/BoardIcon";
 import AddIcon from "@mui/icons-material/Add";
-import {mockedBoards} from "../../data/mockedBoards";
-import BoardFormDialog from "../BoarFormDialog/BoardFormDialog";
+import {mockedBoards} from "../../../data/mockedBoards";
+import BoardFormDialog from "../BoardFormDialog/BoardFormDialog";
 
 const addButtonStyle = {
     height: 150,

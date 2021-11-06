@@ -1,7 +1,7 @@
 import React from 'react';
 import {mockedBoards} from "../data/mockedBoards";
 import {Typography} from "@mui/material";
-import BoardList from "../components/BoardList/BoardList";
+import BoardList from "../components/Board/BoardList/BoardList";
 
 const boardsPageStyle = {
     textAlign: "center",

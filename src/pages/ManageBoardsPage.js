@@ -1,7 +1,7 @@
 import React from 'react';
 import {Typography} from "@mui/material";
 import {mockedBoards} from "../data/mockedBoards";
-import BoardAccordion from "../components/BoardAccordion/BoardAccordion";
+import BoardAccordion from "../components/Board/BoardAccordion/BoardAccordion";
 
 const boardsPageStyle = {
     textAlign: "center",

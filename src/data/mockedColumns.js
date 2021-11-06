@@ -6,19 +6,19 @@ export const mockedColumns = [
             [
                 {
                     taskId: 1,
-                    title: "Do this",
-                    description: "Just do it",
+                    title: "Write backend",
+                    description: "Backend should be implemented",
                     assignedTo: "Łukasz"
                 },
                 {
                     taskId: 2,
-                    title: "Do this also",
-                    description: "Please do it",
+                    title: "Create database",
+                    description: "Use h2 in memory or connect to pjakt database",
                     assignedTo: null
                 },
                 {
                     taskId: 3,
-                    title: "And do this",
+                    title: "Implement security",
                     description: "",
                     assignedTo: "Katarzyna"
                 }
@@ -31,8 +31,8 @@ export const mockedColumns = [
             [
                 {
                     taskId: 4,
-                    title: "Task in progress",
-                    description: "Just do it",
+                    title: "Finish frontend",
+                    description: "Use mocked data",
                     assignedTo: null
                 }
             ]
@@ -48,14 +48,14 @@ export const mockedColumns = [
         tasks: [
             {
                 taskId: 5,
-                title: "Well done",
-                description: "You did great",
+                title: "Create sidebar",
+                description: "Sidebar should be displayed on the left",
                 assignedTo: "Martyna"
             },
             {
                 taskId: 6,
-                title: "You also did well",
-                description: "Nice",
+                title: "Allow adding new tasks",
+                description: "",
                 assignedTo: "Łukasz"
             }
         ]

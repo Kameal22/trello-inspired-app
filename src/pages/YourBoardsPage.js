@@ -1,5 +1,5 @@
 import React from 'react';
-import BoardList from "../components/BoardList/BoardList";
+import BoardList from "../components/Board/BoardList/BoardList";
 import {Typography} from "@mui/material";
 
 const boardsPageStyle = {

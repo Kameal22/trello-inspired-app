@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Button, Card, Typography} from "@mui/material";
 import Task from "../Task/Task";
 import AddIcon from "@mui/icons-material/Add";
-import TaskFormDialog from "../TaskFormDialog/TaskFormDialog";
+import TaskFormDialog from "../Task/TaskFormDialog/TaskFormDialog";
 import {Draggable} from "react-beautiful-dnd";
 
 const outsideColumnStyle = {
