@@ -2,7 +2,7 @@
 
 ## Overview
 
-Trello / JIRA inspired application allowing to make kanban boards.
+Trello / JIRA inspired application for making kanban boards.
 
 ## Database schema
 
