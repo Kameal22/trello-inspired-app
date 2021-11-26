@@ -1,5 +1,4 @@
 import React from 'react';
-import {mockedBoards} from "../data/mockedBoards";
 import {Typography} from "@mui/material";
 import BoardList from "../components/Board/BoardList/BoardList";
 
@@ -12,7 +11,7 @@ const AllBoardsPage = () => {
     return (
         <div>
             <Typography variant="h2" style={boardsPageStyle}>All boards:</Typography>
-            <BoardList numberOfBoards={mockedBoards.length}/>
+            <BoardList/>
         </div>
     );
 };

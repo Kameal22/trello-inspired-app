@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Card, Grid} from "@mui/material";
 import BoardIcon from "../BoardIcon/BoardIcon";
 import AddIcon from "@mui/icons-material/Add";
-import {mockedBoards} from "../../../data/mockedBoards";
 import BoardFormDialog from "../BoardFormDialog/BoardFormDialog";
+import {fetchAllBoards, postBoard} from "../../../services/board-service";
 
 const addButtonStyle = {
     height: 150,
@@ -11,19 +11,30 @@ const addButtonStyle = {
     justifyContent: 'center'
 };
 
-const BoardList = ({numberOfBoards}) => {
-    const [boards, setBoards] = useState(mockedBoards.slice(0, numberOfBoards));
+const BoardList = () => {
+    const [boards, setBoards] = useState([]);
     const [open, setOpen] = useState(false);
 
-    //TODO: change it to send post to database and open popup window
-    const addNewBoard = (name, description) => {
+    useEffect(() => {
+        const fetchBoards = async () => {
+            const boards = await fetchAllBoards();
+            setBoards(boards);
+        }
+        fetchBoards();
+    }, [])
+
+    const addNewBoard = async (name, description) => {
         const newBoard = {
-            boardId: boards[boards.length - 1].boardId + 1,
             name: name,
             description: description
         }
 
-        setBoards([...boards, newBoard]);
+        postBoard(newBoard)
+            .then(id => {
+                newBoard.boardId = id;
+                setBoards([...boards, newBoard]);
+            });
+        //TODO: add exception handling
     }
 
     const toggleDialog = () => {
