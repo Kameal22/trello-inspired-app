@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Alert, Grid, Snackbar, Typography} from "@mui/material";
-import {mockedColumns} from "../data/mockedColumns";
 import Column from "../components/Column/Column";
 import {DragDropContext, Droppable} from "react-beautiful-dnd";
 import {v4 as uuidv4} from 'uuid';
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useHistory} from "react-router-dom";
 import ConfirmDeleteBoardDialog from "../components/Board/ConfirmDeleteBoardDialog/ConfirmDeleteBoardDialog";
+import {fetchBoardDetails} from "../services/board-service";
 
 const deleteIconStyle = {
     float: "right",
@@ -15,7 +15,7 @@ const deleteIconStyle = {
 };
 
 const BoardPage = ({boardId}) => {
-    const [columns, setColumns] = useState(mockedColumns);
+    const [boardDetails, setBoardDetails] = useState({columns: []});
     const [snackbar, setSnackbar] = useState({
         open: false,
         type: "info",
@@ -24,6 +24,14 @@ const BoardPage = ({boardId}) => {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const history = useHistory();
     const boardMembers = ["Łukasz", "Katarzyna", "Martyna", "Tadziu"]
+
+    useEffect(() => {
+        const fetchDetails = async () => {
+            const boardDetails = await fetchBoardDetails(boardId);
+            setBoardDetails(boardDetails);
+        }
+        fetchDetails();
+    }, [])
 
     const toggleDeleteDialog = () => {
         setDeleteDialogOpen(!deleteDialogOpen);
@@ -135,7 +143,7 @@ const BoardPage = ({boardId}) => {
         setSnackbar({...snackbar, open: false});
     }
 
-    const columnItems = columns.map(column =>
+    const columnItems = boardDetails.columns.map(column =>
         <Grid key={column.columnId}
               style={{marginLeft: 15}}
               item
@@ -156,7 +164,7 @@ const BoardPage = ({boardId}) => {
         <div style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
             <div>
                 <Typography variant="h3" style={{height: '10%'}}>
-                    Hello! You are on board with board id {boardId}
+                    {boardDetails.name}
                 </Typography>
                 <DeleteIcon style={deleteIconStyle} onClick={toggleDeleteDialog}/>
             </div>
