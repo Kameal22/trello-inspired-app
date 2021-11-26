@@ -6,7 +6,8 @@ import {v4 as uuidv4} from 'uuid';
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useHistory} from "react-router-dom";
 import ConfirmDeleteBoardDialog from "../components/Board/ConfirmDeleteBoardDialog/ConfirmDeleteBoardDialog";
-import {fetchBoardDetails} from "../services/board-service";
+import {deleteBoard, fetchBoardDetails} from "../services/board-service";
+import {NO_CONTENT} from "../constants/http_statuses";
 
 const deleteIconStyle = {
     float: "right",
@@ -27,6 +28,7 @@ const BoardPage = ({boardId}) => {
 
     useEffect(() => {
         const fetchDetails = async () => {
+            //TODO: handle getting board that doesn't exist (catching error)
             const boardDetails = await fetchBoardDetails(boardId);
             setBoardDetails(boardDetails);
         }
@@ -131,8 +133,12 @@ const BoardPage = ({boardId}) => {
         })
     }
 
-    const handleDeleteBoard = () => {
-        history.push("/all-boards");
+    const handleDeleteBoard = boardId => {
+        deleteBoard(boardId)
+            .then(status => {
+                if (status === NO_CONTENT)
+                    history.push("/all-boards");
+            });
     }
 
     const handleSnackbarClose = (event, reason) => {
@@ -178,6 +184,7 @@ const BoardPage = ({boardId}) => {
                 deleteBoard={handleDeleteBoard}
                 toggleDialog={toggleDeleteDialog}
                 boardId={boardId}
+                name={boardDetails.name}
             />
             <Snackbar open={snackbar.open} autoHideDuration={3000} onClose={handleSnackbarClose}>
                 <Alert onClose={handleSnackbarClose} severity={snackbar.type} sx={{width: '100%'}}>
