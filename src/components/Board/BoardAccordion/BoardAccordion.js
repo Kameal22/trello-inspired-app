@@ -9,15 +9,15 @@ const boardAccordionStyle = {
     marginBottom: 50
 }
 
-const BoardAccordion = ({name, users, boardId, addAdminRights}) => {
+const BoardAccordion = ({name, members, boardId, addAdminRights}) => {
     return (
         <Accordion style={boardAccordionStyle}>
             <AccordionSummary expandIcon={<ExpandMoreOutlined/>}>
                 <Typography gutterBottom variant="h5">{name}</Typography>
             </AccordionSummary>
             <AccordionDetails style={{color: "white"}}>
-                {users.length > 0 ?
-                    <BoardMembersTable users={users} boardId={boardId} addAdminRights={addAdminRights}/> :
+                {members.length > 0 ?
+                    <BoardMembersTable members={members} boardId={boardId} addAdminRights={addAdminRights}/> :
                     <Typography>You are the only member</Typography>}
             </AccordionDetails>
         </Accordion>

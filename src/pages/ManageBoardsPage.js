@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Typography} from "@mui/material";
-import {mockedBoards} from "../data/mockedBoards";
 import BoardAccordion from "../components/Board/BoardAccordion/BoardAccordion";
 import {ADMIN_ROLE} from "../utils/RoleUtils";
+import {fetchAllBoards, fetchBoardMembers, postAdminRights} from "../services/board-service";
+import {NO_CONTENT} from "../constants/http_statuses";
 
 const boardsPageStyle = {
     textAlign: "center",
@@ -10,19 +11,38 @@ const boardsPageStyle = {
 };
 
 const ManageBoardsPage = () => {
-    const [boards, setBoards] = useState(mockedBoards);
+    const [boards, setBoards] = useState([]);
+
+    useEffect(() => {
+        const fetchBoards = async () => {
+            //TODO: Fetch boards for specific users here
+            const boards = await fetchAllBoards();
+            for (const board of boards) {
+                board.members = await fetchBoardMembers(board.boardId);
+            }
+            setBoards(boards);
+        }
+        fetchBoards();
+    }, [])
 
     const addAdminRights = (userId, boardId) => {
-        const changedUsers = boards.find(board => board.boardId === boardId).users
-            .map(user => user.userId === userId ? {...user, role: ADMIN_ROLE} : user);
-
-        setBoards(boards.map(board => board.boardId === boardId ? {...board, users: changedUsers} : board));
+        postAdminRights(boardId, userId)
+            .then(status => {
+                if (status === NO_CONTENT) {
+                    const changedUsers = boards.find(board => board.boardId === boardId).members
+                        .map(user => user.userId === userId ? {...user, role: ADMIN_ROLE} : user);
+                    setBoards(boards.map(board => board.boardId === boardId ? {
+                        ...board,
+                        members: changedUsers
+                    } : board));
+                }
+            });
     }
 
     const boardAccordions = boards.map(board => <BoardAccordion key={board.boardId}
                                                                 name={board.name}
                                                                 boardId={board.boardId}
-                                                                users={board.users}
+                                                                members={board.members}
                                                                 addAdminRights={addAdminRights}/>);
     return (
         <div>

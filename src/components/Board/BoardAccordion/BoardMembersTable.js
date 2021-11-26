@@ -3,20 +3,20 @@ import {Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
 import "./BoardMemberTable.css"
 import {getRoleString, MEMBER_ROLE} from "../../../utils/RoleUtils";
 
-const BoardMembersTable = ({users, boardId, addAdminRights}) => {
-    const userRows = users.map(user =>
-        <TableRow key={user.userId}>
-            <TableCell>{user.name}</TableCell>
-            <TableCell>{user.taskCount}</TableCell>
-            <TableCell>{user.joinedDate}</TableCell>
+const BoardMembersTable = ({members, boardId, addAdminRights}) => {
+    const userRows = members.map(member =>
+        <TableRow key={member.userId}>
+            <TableCell>{member.name}</TableCell>
+            {/*<TableCell>{member.taskCount}</TableCell>*/}
+            <TableCell>{new Date(member.joinDate).toLocaleDateString()}</TableCell>
             <TableCell>
                 <>
-                    <span>{getRoleString(user.role)}</span>
+                    <span>{getRoleString(member.role)}</span>
                     {/*TODO: when integrated with backend check if user that clicks is admin to this board*/}
-                    {user.role === MEMBER_ROLE &&
+                    {member.role === MEMBER_ROLE &&
                     <Button variant="contained"
                             size="small"
-                            onClick={() => addAdminRights(user.userId, boardId)}
+                            onClick={() => addAdminRights(member.userId, boardId)}
                             style={{marginLeft: 30}}>
                         Add admin
                     </Button>}
@@ -30,7 +30,7 @@ const BoardMembersTable = ({users, boardId, addAdminRights}) => {
                 <TableHead>
                     <TableRow>
                         <TableCell>Name</TableCell>
-                        <TableCell>Number of tasks</TableCell>
+                        {/*<TableCell>Number of tasks</TableCell>*/}
                         <TableCell>Date of joining board</TableCell>
                         <TableCell>Role</TableCell>
                     </TableRow>
