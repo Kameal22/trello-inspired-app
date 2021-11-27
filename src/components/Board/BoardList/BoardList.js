@@ -34,7 +34,6 @@ const BoardList = () => {
                 newBoard.boardId = id;
                 setBoards([...boards, newBoard]);
             });
-        //TODO: add exception handling
     }
 
     const toggleDialog = () => {
