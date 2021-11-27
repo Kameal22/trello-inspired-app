@@ -20,7 +20,6 @@ const TaskFormDialog = ({open, toggleDialog, addNewTask, columnId}) => {
         }
     }
 
-    //TODO: handle getting response if board was successfully added
     const handleAddNewTask = e => {
         e.preventDefault()
         if (!title) {
@@ -29,7 +28,11 @@ const TaskFormDialog = ({open, toggleDialog, addNewTask, columnId}) => {
         }
 
         setTitleError(false);
-        addNewTask(title, description, columnId);
+        const task = {
+            title: title,
+            description: description
+        }
+        addNewTask(task, columnId);
         closeDialog();
     }
 

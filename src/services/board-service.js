@@ -25,3 +25,8 @@ export const fetchBoardDetails = boardId => {
     return axios.get(`${BASE_URL}/boards/${boardId}`)
         .then(response => response.data);
 }
+
+export const deleteBoard = boardId => {
+    return axios.delete(`${BASE_URL}/boards/${boardId}`)
+        .then(response => response.status);
+}

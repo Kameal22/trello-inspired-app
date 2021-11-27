@@ -17,6 +17,7 @@ const ManageBoardsPage = () => {
         const fetchBoards = async () => {
             //TODO: Fetch boards for specific users here
             const boards = await fetchAllBoards();
+            //TODO: Think about axios.all
             for (const board of boards) {
                 board.members = await fetchBoardMembers(board.boardId);
             }

@@ -4,7 +4,7 @@ import TaskDetailsDialog from "./TaskDetailsDialog/TaskDetailsDialog";
 
 
 const Task = ({task, editTask, deleteTask, columnId, isDragging, boardMembers}) => {
-    const hasAssignee = task.assignedTo != null && task.assignedTo !== '';
+    const hasAssignee = task.assignee != null;
     const [detailsOpen, setDetailsOpen] = useState(false);
 
     const toggleDetailsDialog = () => {
@@ -18,7 +18,7 @@ const Task = ({task, editTask, deleteTask, columnId, isDragging, boardMembers}) 
     }
 
     const getNameFirstLetter = () => {
-        return task.assignedTo.charAt(0);
+        return task.assignee.name.charAt(0);
     }
 
     const taskCardStyle = {
