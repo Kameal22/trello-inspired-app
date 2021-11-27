@@ -75,7 +75,6 @@ const BoardPage = ({boardId}) => {
     }
 
     const handleChangeColumn = (source, destination) => {
-        //TODO: do this with call to backend also
         let sourceTasks = boardDetails.columns.find(column => column.columnId.toString() === source.droppableId).tasks;
         const [removedTask] = sourceTasks.splice(source.index, 1);
 
@@ -149,9 +148,10 @@ const BoardPage = ({boardId}) => {
 
     const handleDeleteTask = (taskId, columnId) => {
         deleteTask(taskId)
-            .then(() => {
-                let tasks = boardDetails.columns.find(column => column.columnId === columnId).tasks;
-                tasks = tasks.filter(task => task.taskId !== taskId);
+            .then(() => boardDetails.columns.find(column => column.columnId === columnId).tasks
+                .filter(task => task.taskId !== taskId)
+            )
+            .then(tasks => {
                 setBoardDetails({
                     ...boardDetails,
                     columns: boardDetails.columns.map(column => column.columnId === columnId ? {
@@ -173,7 +173,9 @@ const BoardPage = ({boardId}) => {
         addTask(columnId, task)
             .then(newTask => {
                 let tasks = boardDetails.columns.find(column => column.columnId === columnId).tasks;
-                tasks = [...tasks, newTask];
+                return [...tasks, newTask];
+            })
+            .then(tasks => {
                 setBoardDetails({
                     ...boardDetails,
                     columns: boardDetails.columns.map(column => column.columnId === columnId ? {
