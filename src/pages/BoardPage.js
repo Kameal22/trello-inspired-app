@@ -7,7 +7,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {useHistory} from "react-router-dom";
 import ConfirmDeleteBoardDialog from "../components/Board/ConfirmDeleteBoardDialog/ConfirmDeleteBoardDialog";
 import {deleteBoard, fetchBoardDetails} from "../services/board-service";
-import {NO_CONTENT} from "../constants/http_statuses";
+import {NO_CONTENT, NOT_FOUND} from "../constants/http_statuses";
 
 const deleteIconStyle = {
     float: "right",
@@ -17,6 +17,7 @@ const deleteIconStyle = {
 
 const BoardPage = ({boardId}) => {
     const [boardDetails, setBoardDetails] = useState({columns: []});
+    const [boardNotFound, setBoardNotFound] = useState(false);
     const [snackbar, setSnackbar] = useState({
         open: false,
         type: "info",
@@ -27,12 +28,13 @@ const BoardPage = ({boardId}) => {
     const boardMembers = ["Łukasz", "Katarzyna", "Martyna", "Tadziu"]
 
     useEffect(() => {
-        const fetchDetails = async () => {
-            //TODO: handle getting board that doesn't exist (catching error)
-            const boardDetails = await fetchBoardDetails(boardId);
-            setBoardDetails(boardDetails);
-        }
-        fetchDetails();
+        fetchBoardDetails(boardId)
+            .then(boardDetails => setBoardDetails(boardDetails))
+            .catch(error => {
+                if (error.response.status === NOT_FOUND) {
+                    setBoardNotFound(true);
+                }
+            });
     }, [])
 
     const toggleDeleteDialog = () => {
@@ -93,6 +95,7 @@ const BoardPage = ({boardId}) => {
 
     const editTask = (editedTask, columnId) => {
         //TODO: add integration with database
+
         let tasks = columns.find(column => column.columnId === columnId).tasks;
         const editedTasks = tasks.map(task => task.taskId === editedTask.taskId ? editedTask : task);
         setColumns(columns.map(column => column.columnId === columnId ? {...column, tasks: editedTasks} : column))
@@ -170,9 +173,9 @@ const BoardPage = ({boardId}) => {
         <div style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
             <div>
                 <Typography variant="h3" style={{height: '10%'}}>
-                    {boardDetails.name}
+                    {boardNotFound ? "Board not found" : boardDetails.name}
                 </Typography>
-                <DeleteIcon style={deleteIconStyle} onClick={toggleDeleteDialog}/>
+                {!boardNotFound && <DeleteIcon style={deleteIconStyle} onClick={toggleDeleteDialog}/>}
             </div>
             <DragDropContext onDragEnd={handleDroppingTask}>
                 <Grid container style={{flexGrow: 1}} wrap="nowrap">
