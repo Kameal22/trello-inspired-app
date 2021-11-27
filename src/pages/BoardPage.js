@@ -8,7 +8,7 @@ import ConfirmDeleteBoardDialog from "../components/Board/ConfirmDeleteBoardDial
 import {deleteBoard, fetchBoardDetails, fetchBoardMembers} from "../services/board-service";
 import {NO_CONTENT, NOT_FOUND} from "../constants/http_statuses";
 import {deleteTask, editTask} from "../services/task-service";
-import {addTask} from "../services/column-service";
+import {addTask, updateTasksInColumn} from "../services/column-service";
 
 const deleteIconStyle = {
     float: "right",
@@ -55,7 +55,7 @@ const BoardPage = ({boardId}) => {
         if (source.droppableId === destination.droppableId) {
             changeOrderInSameColumn(source, destination);
         } else {
-            changeColumn(source, destination);
+            handleChangeColumn(source, destination);
         }
 
     }
@@ -74,30 +74,36 @@ const BoardPage = ({boardId}) => {
         });
     }
 
-    const changeColumn = (source, destination) => {
+    const handleChangeColumn = (source, destination) => {
         //TODO: do this with call to backend also
-        let sourceTasks = columns.find(column => column.columnId.toString() === source.droppableId).tasks;
+        let sourceTasks = boardDetails.columns.find(column => column.columnId.toString() === source.droppableId).tasks;
         const [removedTask] = sourceTasks.splice(source.index, 1);
 
-        let destinationTasks = columns.find(column => column.columnId.toString() === destination.droppableId).tasks;
+        let destinationTasks = boardDetails.columns.find(column => column.columnId.toString() === destination.droppableId).tasks;
         destinationTasks.splice(destination.index, 0, removedTask);
 
-        const editedColumns = columns
-            .map(column => column.columnId.toString() === source.droppableId ?
-                {
-                    ...column,
-                    tasks: sourceTasks
-                }
-                :
-                column)
-            .map(column => column.columnId.toString() === destination.droppableId ?
-                {
-                    ...column,
-                    tasks: destinationTasks
-                }
-                :
-                column)
-        setColumns(editedColumns);
+        const destinationTaskIds = destinationTasks.map(task => task.taskId);
+
+        updateTasksInColumn(destinationTaskIds, destination.droppableId)
+            .then(() => boardDetails.columns
+                .map(column => column.columnId.toString() === source.droppableId ?
+                    {
+                        ...column,
+                        tasks: sourceTasks
+                    }
+                    :
+                    column)
+                .map(column => column.columnId.toString() === destination.droppableId ?
+                    {
+                        ...column,
+                        tasks: destinationTasks
+                    }
+                    :
+                    column))
+            .then(editedColumns => setBoardDetails({
+                ...boardDetails,
+                columns: editedColumns
+            }));
     }
 
 
