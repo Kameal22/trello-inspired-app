@@ -99,42 +99,43 @@ const BoardPage = ({boardId}) => {
 
 
     const handleEditTask = (editedTask, columnId, taskId) => {
-        console.log(editedTask);
         editTask(taskId, editedTask)
-            .then(() => {
-                let tasks = boardDetails.columns.find(column => column.columnId === columnId).tasks;
-                const editedTasks = tasks.map(task => {
-                    if (task.taskId === taskId) {
-                        task.title = editedTask.title;
-                        task.description = editedTask.description;
-                        if (editedTask.assigneeId) {
-                            const assignee = boardDetails.members.find(member => member.userId === editedTask.assigneeId);
-                            task.assignee = {
-                                userId: assignee.userId,
-                                username: assignee.username,
-                                name: assignee.name,
-                                surname: assignee.surname
-                            };
-                        } else {
-                            task.assignee = null;
-                        }
-                    }
-                    return task;
-                });
-                setBoardDetails({
-                    columns: boardDetails.columns.map(column => column.columnId === columnId ? {
-                        ...column,
-                        tasks: editedTasks
-                    } : column),
-                    members: boardDetails.members
-                });
-
-                setSnackbar({
+            .then(() => updateTasks(editedTask, columnId, taskId))
+            .then(editedTasks => setBoardDetails({
+                columns: boardDetails.columns.map(column => column.columnId === columnId ? {
+                    ...column,
+                    tasks: editedTasks
+                } : column),
+                members: boardDetails.members
+            }))
+            .then(() => setSnackbar({
                     open: true,
                     type: "info",
                     message: "Task edited"
                 })
-            });
+            );
+    }
+
+    const updateTasks = (editedTask, columnId, taskId) => {
+        let tasks = boardDetails.columns.find(column => column.columnId === columnId).tasks;
+        return tasks.map(task => {
+            if (task.taskId === taskId) {
+                task.title = editedTask.title;
+                task.description = editedTask.description;
+                if (editedTask.assigneeId) {
+                    const assignee = boardDetails.members.find(member => member.userId === editedTask.assigneeId);
+                    task.assignee = {
+                        userId: assignee.userId,
+                        username: assignee.username,
+                        name: assignee.name,
+                        surname: assignee.surname
+                    };
+                } else {
+                    task.assignee = null;
+                }
+            }
+            return task;
+        });
     }
 
     const handleDeleteTask = (taskId, columnId) => {
