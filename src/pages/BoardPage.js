@@ -62,13 +62,16 @@ const BoardPage = ({boardId}) => {
 
     const changeOrderInSameColumn = (source, destination) => {
         //TODO: do this with call to backend also
-        let sourceTasks = columns.find(column => column.columnId.toString() === destination.droppableId).tasks;
+        let sourceTasks = boardDetails.columns.find(column => column.columnId.toString() === destination.droppableId).tasks;
         const [removedTask] = sourceTasks.splice(source.index, 1);
         sourceTasks.splice(destination.index, 0, removedTask);
-        setColumns(columns.map(column => column.columnId.toString() === destination.droppableId ? {
-            ...column,
-            tasks: sourceTasks
-        } : column));
+        setBoardDetails({
+            ...boardDetails,
+            columns: boardDetails.columns.map(column => column.columnId.toString() === destination.droppableId ? {
+                ...column,
+                tasks: sourceTasks
+            } : column)
+        });
     }
 
     const changeColumn = (source, destination) => {
