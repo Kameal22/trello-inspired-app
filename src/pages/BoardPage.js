@@ -2,13 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {Alert, Grid, Snackbar, Typography} from "@mui/material";
 import Column from "../components/Column/Column";
 import {DragDropContext, Droppable} from "react-beautiful-dnd";
-import {v4 as uuidv4} from 'uuid';
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useHistory} from "react-router-dom";
 import ConfirmDeleteBoardDialog from "../components/Board/ConfirmDeleteBoardDialog/ConfirmDeleteBoardDialog";
 import {deleteBoard, fetchBoardDetails, fetchBoardMembers} from "../services/board-service";
 import {NO_CONTENT, NOT_FOUND} from "../constants/http_statuses";
 import {deleteTask, editTask} from "../services/task-service";
+import {addTask} from "../services/column-service";
 
 const deleteIconStyle = {
     float: "right",
@@ -102,11 +102,11 @@ const BoardPage = ({boardId}) => {
         editTask(taskId, editedTask)
             .then(() => updateTasks(editedTask, columnId, taskId))
             .then(editedTasks => setBoardDetails({
+                ...boardDetails,
                 columns: boardDetails.columns.map(column => column.columnId === columnId ? {
                     ...column,
                     tasks: editedTasks
-                } : column),
-                members: boardDetails.members
+                } : column)
             }))
             .then(() => setSnackbar({
                     open: true,
@@ -144,12 +144,14 @@ const BoardPage = ({boardId}) => {
                 let tasks = boardDetails.columns.find(column => column.columnId === columnId).tasks;
                 tasks = tasks.filter(task => task.taskId !== taskId);
                 setBoardDetails({
+                    ...boardDetails,
                     columns: boardDetails.columns.map(column => column.columnId === columnId ? {
                         ...column,
                         tasks
                     } : column)
                 });
-
+            })
+            .then(() => {
                 setSnackbar({
                     open: true,
                     type: "error",
@@ -158,21 +160,26 @@ const BoardPage = ({boardId}) => {
             });
     }
 
-    const addNewTask = (title, description, columnId) => {
-        let tasks = columns.find(column => column.columnId === columnId).tasks;
-        const newTask = {
-            taskId: uuidv4(),
-            title: title,
-            description: description
-        };
-        tasks = [...tasks, newTask];
-        setColumns(columns.map(column => column.columnId === columnId ? {...column, tasks} : column))
-
-        setSnackbar({
-            open: true,
-            type: "success",
-            message: "Task added"
-        })
+    const handleAddNewTask = (task, columnId) => {
+        addTask(columnId, task)
+            .then(newTask => {
+                let tasks = boardDetails.columns.find(column => column.columnId === columnId).tasks;
+                tasks = [...tasks, newTask];
+                setBoardDetails({
+                    ...boardDetails,
+                    columns: boardDetails.columns.map(column => column.columnId === columnId ? {
+                        ...column,
+                        tasks
+                    } : column),
+                })
+            })
+            .then(() => {
+                setSnackbar({
+                    open: true,
+                    type: "success",
+                    message: "Task added"
+                })
+            })
     }
 
     const handleDeleteBoard = boardId => {
@@ -201,7 +208,7 @@ const BoardPage = ({boardId}) => {
                     <Column {...column}
                             provided={provided}
                             editTask={handleEditTask}
-                            addNewTask={addNewTask}
+                            addNewTask={handleAddNewTask}
                             deleteTask={handleDeleteTask}
                             boardMembers={boardDetails.members}/>
                 )}

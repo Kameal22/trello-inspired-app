@@ -29,7 +29,11 @@ const TaskFormDialog = ({open, toggleDialog, addNewTask, columnId}) => {
         }
 
         setTitleError(false);
-        addNewTask(title, description, columnId);
+        const task = {
+            title: title,
+            description: description
+        }
+        addNewTask(task, columnId);
         closeDialog();
     }
 
