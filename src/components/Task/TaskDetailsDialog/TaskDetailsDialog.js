@@ -14,12 +14,11 @@ import {
 } from "@mui/material";
 import useInputState from "../../../hooks/useInputState";
 import DeleteIcon from '@mui/icons-material/Delete';
-import {v4 as uuidv4} from 'uuid';
 
 const TaskDetailsDialog = ({open, toggleDialog, task, editTask, deleteTask, columnId, boardMembers}) => {
     const [title, updateTitle, resetTitle, titleError, setTitleError] = useInputState(task.title);
     const [description, updateDescription, resetDescription] = useInputState(task.description);
-    const [assignedTo, updateAssignedTo, resetAssignedTo] = useInputState(task.assignedTo);
+    const [assignedTo, updateAssignedTo, resetAssignedTo] = useInputState(task.assignee != null ? task.assignee.userId : null);
 
     const closeDialog = () => {
         resetTitle(task.title);
@@ -44,25 +43,25 @@ const TaskDetailsDialog = ({open, toggleDialog, task, editTask, deleteTask, colu
         }
 
         const editedTask = {
-            taskId: task.taskId,
             title: title,
             description: description,
-            assignedTo: assignedTo !== '' ? assignedTo : null
+            assigneeId: assignedTo
         };
-        editTask(editedTask, columnId);
+        editTask(editedTask, columnId, task.taskId);
         toggleDialog();
     }
 
     const boardMembersMenuItems = boardMembers.map(boardMember =>
-        <MenuItem value={boardMember} key={uuidv4()}>
-            {boardMember}
+        <MenuItem value={boardMember.userId} key={boardMember.userId}>
+            {boardMember.name} {boardMember.surname}
         </MenuItem>);
 
     return (
         <Dialog open={open} onClose={closeDialog}>
             <DialogTitle>
                 {task.title}
-                <DeleteIcon style={{float: "right", cursor: "pointer"}} onClick={() => deleteTask(task.taskId, columnId)}/>
+                <DeleteIcon style={{float: "right", cursor: "pointer"}}
+                            onClick={() => deleteTask(task.taskId, columnId)}/>
             </DialogTitle>
             <DialogContent>
                 <Box component="form" onSubmit={handleEditingTask}>
