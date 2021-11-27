@@ -8,6 +8,7 @@ import {useHistory} from "react-router-dom";
 import ConfirmDeleteBoardDialog from "../components/Board/ConfirmDeleteBoardDialog/ConfirmDeleteBoardDialog";
 import {deleteBoard, fetchBoardDetails} from "../services/board-service";
 import {NO_CONTENT, NOT_FOUND} from "../constants/http_statuses";
+import {deleteTask} from "../services/task-service";
 
 const deleteIconStyle = {
     float: "right",
@@ -107,16 +108,24 @@ const BoardPage = ({boardId}) => {
         })
     }
 
-    const deleteTask = (taskId, columnId) => {
-        let tasks = columns.find(column => column.columnId === columnId).tasks;
-        tasks = tasks.filter(task => task.taskId !== taskId);
-        setColumns(columns.map(column => column.columnId === columnId ? {...column, tasks} : column));
+    const handleDeleteTask = (taskId, columnId) => {
+        deleteTask(taskId)
+            .then(() => {
+                let tasks = boardDetails.columns.find(column => column.columnId === columnId).tasks;
+                tasks = tasks.filter(task => task.taskId !== taskId);
+                setBoardDetails({
+                    columns: boardDetails.columns.map(column => column.columnId === columnId ? {
+                        ...column,
+                        tasks
+                    } : column)
+                });
 
-        setSnackbar({
-            open: true,
-            type: "error",
-            message: "Task deleted"
-        })
+                setSnackbar({
+                    open: true,
+                    type: "error",
+                    message: "Task deleted"
+                })
+            });
     }
 
     const addNewTask = (title, description, columnId) => {
@@ -163,7 +172,7 @@ const BoardPage = ({boardId}) => {
                             provided={provided}
                             editTask={editTask}
                             addNewTask={addNewTask}
-                            deleteTask={deleteTask}
+                            deleteTask={handleDeleteTask}
                             boardMembers={boardMembers}/>
                 )}
             </Droppable>
