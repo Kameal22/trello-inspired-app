@@ -18,6 +18,7 @@ const deleteIconStyle = {
 
 const BoardPage = ({boardId}) => {
     const [boardDetails, setBoardDetails] = useState({columns: [], members: []});
+    const [members, setMembers] = useState([]);
     const [boardNotFound, setBoardNotFound] = useState(false);
     const [snackbar, setSnackbar] = useState({
         open: false,
@@ -28,19 +29,19 @@ const BoardPage = ({boardId}) => {
     const history = useHistory();
 
     useEffect(() => {
-        async function getBoardDetails() {
-            const boardDetails = await fetchBoardDetails(boardId)
-                .catch(error => {
-                    if (error.response.status === NOT_FOUND) {
-                        setBoardNotFound(true);
-                    }
-                });
-            boardDetails.members = await fetchBoardMembers(boardId);
-            setBoardDetails(boardDetails);
-        }
-
-        getBoardDetails();
+        fetchBoardDetails(boardId)
+            .then(details => setBoardDetails(details))
+            .catch(error => {
+                if (error.response.status === NOT_FOUND) {
+                    setBoardNotFound(true);
+                }
+            });
     }, [])
+
+    useEffect(() => {
+        fetchBoardMembers(boardId)
+            .then(members => setMembers(members))
+    }, [boardDetails])
 
     const toggleDeleteDialog = () => {
         setDeleteDialogOpen(!deleteDialogOpen);
@@ -131,7 +132,7 @@ const BoardPage = ({boardId}) => {
                 task.title = editedTask.title;
                 task.description = editedTask.description;
                 if (editedTask.assigneeId) {
-                    const assignee = boardDetails.members.find(member => member.userId === editedTask.assigneeId);
+                    const assignee = members.find(member => member.userId === editedTask.assigneeId);
                     task.assignee = {
                         userId: assignee.userId,
                         username: assignee.username,
@@ -221,7 +222,7 @@ const BoardPage = ({boardId}) => {
                             editTask={handleEditTask}
                             addNewTask={handleAddNewTask}
                             deleteTask={handleDeleteTask}
-                            boardMembers={boardDetails.members}/>
+                            boardMembers={members}/>
                 )}
             </Droppable>
         </Grid>);
