@@ -6,11 +6,6 @@ export const fetchAllBoards = () => {
         .then(response => response.data);
 }
 
-export const fetchAllBoardsForUser = (userId) => {
-    return axios.get(`${BASE_URL}/users/${userId}/boards`)
-        .then(response => response.data);
-}
-
 export const postBoard = board => {
     return axios.post(`${BASE_URL}/boards`, board)
         .then(response => response.data)

@@ -4,23 +4,19 @@ import BoardAccordion from "../components/Board/BoardAccordion/BoardAccordion";
 import {ADMIN_ROLE} from "../utils/RoleUtils";
 import {fetchAllBoards, fetchBoardMembers, postAdminRights} from "../services/board-service";
 import {NO_CONTENT} from "../constants/http_statuses";
+import {fetchAllBoardsAndMembersForUser} from "../services/user-service";
 
 const boardsPageStyle = {
     textAlign: "center",
     marginBottom: 40
 };
 
-const ManageBoardsPage = (userId) => {
+const ManageBoardsPage = ({userId}) => {
     const [boards, setBoards] = useState([]);
 
     useEffect(() => {
         const fetchBoards = async () => {
-            //TODO: Fetch boards for specific users here
-            const boards = await fetchAllBoards();
-            //TODO: Think about axios.all
-            for (const board of boards) {
-                board.members = await fetchBoardMembers(board.boardId);
-            }
+            const boards = await fetchAllBoardsAndMembersForUser(userId);
             setBoards(boards);
         }
         fetchBoards();

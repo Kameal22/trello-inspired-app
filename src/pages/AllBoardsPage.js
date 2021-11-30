@@ -10,7 +10,9 @@ const boardsPageStyle = {
 const AllBoardsPage = ({userId}) => {
     return (
         <div>
-            <Typography variant="h2" style={boardsPageStyle}>All boards:</Typography>
+            <Typography variant="h2" style={boardsPageStyle}>
+                {userId ? "Subscribed boards" : "All boards:"}
+            </Typography>
             <BoardList userId={userId}/>
         </div>
     );

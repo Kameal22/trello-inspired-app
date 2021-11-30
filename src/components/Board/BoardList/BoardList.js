@@ -3,7 +3,8 @@ import {Button, Card, Grid} from "@mui/material";
 import BoardIcon from "../BoardIcon/BoardIcon";
 import AddIcon from "@mui/icons-material/Add";
 import BoardFormDialog from "../BoardFormDialog/BoardFormDialog";
-import {fetchAllBoards, fetchAllBoardsForUser, postBoard} from "../../../services/board-service";
+import {fetchAllBoards, postBoard} from "../../../services/board-service";
+import {fetchAllBoardsForUser} from "../../../services/user-service";
 
 const addButtonStyle = {
     height: 150,
