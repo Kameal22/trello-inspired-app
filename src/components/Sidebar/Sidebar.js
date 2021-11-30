@@ -39,8 +39,13 @@ const Sidebar = () => {
                 </ListItem>
                 {/*TODO insert user id here*/}
                 <ListItem button key={"Your boards"} component={NavLink}
-                          exact to={"/1234/boards"} activeClassName="active-link">
+                          exact to={"/1/boards"} activeClassName="active-link">
                     <ListItemText primary={"Your boards"}/>
+                </ListItem>
+                {/*TODO insert user id here*/}
+                <ListItem button key={"Manage boards"} component={NavLink}
+                          exact to={"/1/manage-boards"} activeClassName="active-link">
+                    <ListItemText primary={"Manage boards"}/>
                 </ListItem>
             </List>
         </Drawer>

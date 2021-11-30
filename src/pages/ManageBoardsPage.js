@@ -10,7 +10,7 @@ const boardsPageStyle = {
     marginBottom: 40
 };
 
-const ManageBoardsPage = () => {
+const ManageBoardsPage = (userId) => {
     const [boards, setBoards] = useState([]);
 
     useEffect(() => {

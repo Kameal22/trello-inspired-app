@@ -7,11 +7,11 @@ const boardsPageStyle = {
     marginBottom: 40
 };
 
-const AllBoardsPage = () => {
+const AllBoardsPage = ({userId}) => {
     return (
         <div>
             <Typography variant="h2" style={boardsPageStyle}>All boards:</Typography>
-            <BoardList/>
+            <BoardList userId={userId}/>
         </div>
     );
 };

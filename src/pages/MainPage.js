@@ -22,7 +22,9 @@ const MainPage = () => {
                         <Route exact path={"/"} component={WelcomePage}/>
                         <Route exact path={"/all-boards"} component={AllBoardsPage}/>
                         <Route exact path={"/:userId/boards"}
-                               render={routeParams => <ManageBoardsPage {...routeParams}/>}/>
+                               component={routeParams => <AllBoardsPage userId={routeParams.match.params.userId}/>}/>
+                        <Route exact path={"/:userId/manage-boards"}
+                               render={routeParams => <ManageBoardsPage userId={routeParams.match.params.userId}/>}/>
                         <Route exact path={"/boards/:boardId"}
                                render={routeParams => <BoardPage boardId={routeParams.match.params.boardId}/>}/>
                         <Route component={NotFoundPage}/>
