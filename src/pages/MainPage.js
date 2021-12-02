@@ -21,6 +21,7 @@ const MainPage = () => {
                     <Switch>
                         <Route exact path={"/"} component={WelcomePage}/>
                         <Route exact path={"/all-boards"} component={AllBoardsPage}/>
+                        //TODO: think about extracting id from jwt, delete route param and pass some boolean value like "fetchAll"
                         <Route exact path={"/:userId/boards"}
                                component={routeParams => <AllBoardsPage userId={routeParams.match.params.userId}/>}/>
                         <Route exact path={"/:userId/manage-boards"}

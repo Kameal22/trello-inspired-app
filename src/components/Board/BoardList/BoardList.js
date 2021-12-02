@@ -15,7 +15,6 @@ const addButtonStyle = {
 const BoardList = ({userId}) => {
     const [boards, setBoards] = useState([]);
     const [open, setOpen] = useState(false);
-    console.log(userId)
 
     useEffect(() => {
         const fetchBoards = async () => {

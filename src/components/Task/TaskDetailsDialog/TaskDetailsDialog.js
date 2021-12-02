@@ -51,6 +51,11 @@ const TaskDetailsDialog = ({open, toggleDialog, task, editTask, deleteTask, colu
         toggleDialog();
     }
 
+    const handleDeletingTask = () => {
+        deleteTask(task.taskId, columnId);
+        toggleDialog();
+    }
+
     const boardMembersMenuItems = boardMembers.map(boardMember =>
         <MenuItem value={boardMember.userId} key={boardMember.userId}>
             {boardMember.name} {boardMember.surname}
@@ -61,7 +66,7 @@ const TaskDetailsDialog = ({open, toggleDialog, task, editTask, deleteTask, colu
             <DialogTitle>
                 {task.title}
                 <DeleteIcon style={{float: "right", cursor: "pointer"}}
-                            onClick={() => deleteTask(task.taskId, columnId)}/>
+                            onClick={handleDeletingTask}/>
             </DialogTitle>
             <DialogContent>
                 <Box component="form" onSubmit={handleEditingTask}>

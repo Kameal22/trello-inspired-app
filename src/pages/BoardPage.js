@@ -76,10 +76,10 @@ const BoardPage = ({boardId}) => {
     }
 
     const handleChangeColumn = (source, destination) => {
-        let sourceTasks = boardDetails.columns.find(column => column.columnId.toString() === source.droppableId).tasks;
+        let sourceTasks = [...boardDetails.columns.find(column => column.columnId.toString() === source.droppableId).tasks];
         const [removedTask] = sourceTasks.splice(source.index, 1);
 
-        let destinationTasks = boardDetails.columns.find(column => column.columnId.toString() === destination.droppableId).tasks;
+        let destinationTasks = [...boardDetails.columns.find(column => column.columnId.toString() === destination.droppableId).tasks];
         destinationTasks.splice(destination.index, 0, removedTask);
 
         const destinationTaskIds = destinationTasks.map(task => task.taskId);
@@ -101,9 +101,11 @@ const BoardPage = ({boardId}) => {
                     :
                     column))
             .then(editedColumns => setBoardDetails({
-                ...boardDetails,
-                columns: editedColumns
-            }));
+                    ...boardDetails,
+                    columns: editedColumns
+                })
+            )
+            .catch(openAuthorizationError);
     }
 
 
@@ -122,7 +124,8 @@ const BoardPage = ({boardId}) => {
                     type: "info",
                     message: "Task edited"
                 })
-            );
+            )
+            .catch(openAuthorizationError);
     }
 
     const updateTasks = (editedTask, columnId, taskId) => {
@@ -167,7 +170,8 @@ const BoardPage = ({boardId}) => {
                     type: "error",
                     message: "Task deleted"
                 })
-            });
+            })
+            .catch(openAuthorizationError);
     }
 
     const handleAddNewTask = (task, columnId) => {
@@ -192,6 +196,7 @@ const BoardPage = ({boardId}) => {
                     message: "Task added"
                 })
             })
+            .catch(openAuthorizationError);
     }
 
     const handleDeleteBoard = boardId => {
@@ -199,7 +204,16 @@ const BoardPage = ({boardId}) => {
             .then(status => {
                 if (status === NO_CONTENT)
                     history.push("/all-boards");
-            });
+            })
+            .catch(openAuthorizationError);
+    }
+
+    const openAuthorizationError = () => {
+        setSnackbar({
+            open: true,
+            type: "error",
+            message: "You need to be logged in to do this"
+        })
     }
 
     const handleSnackbarClose = (event, reason) => {
