@@ -203,7 +203,7 @@ const BoardPage = ({boardId}) => {
         deleteBoard(boardId)
             .then(status => {
                 if (status === NO_CONTENT)
-                    history.push("/all-boards");
+                    history.push("/main-page/all-boards");
             })
             .catch(openAuthorizationError);
     }

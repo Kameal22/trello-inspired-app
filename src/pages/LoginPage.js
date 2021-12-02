@@ -1,10 +1,29 @@
-import React from 'react';
+import React, {useContext, useState} from 'react';
 import {Box, Button, TextField, Typography} from "@mui/material";
+import {Link, useHistory} from "react-router-dom";
+import {AuthContext} from "../contexts/AuthContext";
+import useInputState from "../hooks/useInputState";
+import {login} from "../services/auth-service";
 
 const LoginPage = () => {
+    const history = useHistory();
+    const {token, handleChangingToken} = useContext(AuthContext);
+    const [username, updateUsername, resetUsername, usernameError, setUsernameError] = useInputState("");
+    const [password, updatePassword, resetPassword, passwordError, setPasswordError] = useInputState("");
+    const [authError, setAuthError] = useState(false);
 
     const handleLogin = e => {
         e.preventDefault();
+        const credentials = {
+            username: username,
+            password: password
+        };
+        login(credentials)
+            .then(handleChangingToken)
+            //TODO: do it better?
+            .then(() => setAuthError(false))
+            .then(() => history.push("/main-page"))
+            .catch(() => setAuthError(true));
     }
 
     return (
@@ -32,6 +51,9 @@ const LoginPage = () => {
                     name="username"
                     autoComplete="username"
                     autoFocus
+                    error={authError}
+                    value={username}
+                    onChange={updateUsername}
                 />
                 <TextField
                     margin="normal"
@@ -41,6 +63,9 @@ const LoginPage = () => {
                     label="Password"
                     type="password"
                     id="password"
+                    error={authError}
+                    value={password}
+                    onChange={updatePassword}
                 />
                 <Button
                     type="submit"
@@ -50,13 +75,15 @@ const LoginPage = () => {
                 >
                     Sign In
                 </Button>
-                <Button
-                    fullWidth
-                    variant="outlined"
-                    sx={{mt: 1, mb: 2}}
-                >
-                    Register
-                </Button>
+                <Link to={'/register'} style={{textDecoration: 'none'}}>
+                    <Button
+                        fullWidth
+                        variant="outlined"
+                        sx={{mt: 1, mb: 2}}
+                    >
+                        Register
+                    </Button>
+                </Link>
             </Box>
         </Box>
     );

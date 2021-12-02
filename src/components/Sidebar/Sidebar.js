@@ -1,7 +1,7 @@
 import React from 'react';
 import {Divider, Drawer, List, ListItem, ListItemText, Toolbar, Typography} from "@mui/material";
 import {makeStyles} from '@mui/styles';
-import {NavLink} from "react-router-dom";
+import {NavLink, useRouteMatch} from "react-router-dom";
 import "./Sidebar.css"
 
 const mockedUsername = "Lukasz";
@@ -33,18 +33,18 @@ const Sidebar = () => {
             <List>
                 <ListItem button key={"All boards"}
                           component={NavLink}
-                          exact to={"/all-boards"}
+                          exact to={"/main-page/all-boards"}
                           activeClassName="active-link">
                     <ListItemText primary={"All boards"}/>
                 </ListItem>
                 {/*TODO insert user id here*/}
                 <ListItem button key={"Subscribed boards"} component={NavLink}
-                          exact to={"/1/boards"} activeClassName="active-link">
+                          exact to={"/main-page/1/boards"} activeClassName="active-link">
                     <ListItemText primary={"Subscribed boards"}/>
                 </ListItem>
                 {/*TODO insert user id here*/}
                 <ListItem button key={"Manage created boards"} component={NavLink}
-                          exact to={"/1/manage-boards"} activeClassName="active-link">
+                          exact to={"/main-page/1/manage-boards"} activeClassName="active-link">
                     <ListItemText primary={"Manage created boards"}/>
                 </ListItem>
             </List>
