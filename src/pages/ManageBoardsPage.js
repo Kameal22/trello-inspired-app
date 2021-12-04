@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {Typography} from "@mui/material";
 import BoardAccordion from "../components/Board/BoardAccordion/BoardAccordion";
 import {ADMIN_ROLE} from "../utils/RoleUtils";
-import {fetchAllBoards, fetchBoardMembers, postAdminRights} from "../services/board-service";
+import {postAdminRights} from "../services/board-service";
 import {NO_CONTENT} from "../constants/http_statuses";
 import {fetchAllBoardsAndMembersForUser} from "../services/user-service";
 import {AuthContext} from "../contexts/AuthContext";

@@ -48,7 +48,7 @@ const Sidebar = () => {
                 color: "white",
                 width: "100%"
             }}
-            color="info"
+            color="warning"
             size="large"
             variant="outlined">
             {isAuthenticated() ? 'Sign out' : 'Sign in'}

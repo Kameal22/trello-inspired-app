@@ -7,7 +7,7 @@ import {register} from "../services/auth-service";
 
 const RegisterPage = () => {
     const history = useHistory();
-    const {token, handleChangingToken} = useContext(AuthContext);
+    const {token, changeToken} = useContext(AuthContext);
     const [username, updateUsername, resetUsername, usernameError, setUsernameError] = useInputState("");
     const [password, updatePassword, resetPassword, passwordError, setPasswordError] = useInputState("");
     const [name, updateName] = useInputState("");
@@ -25,10 +25,11 @@ const RegisterPage = () => {
         };
 
         register(userDetails)
-            .then(handleChangingToken)
+            .then(changeToken)
             //TODO: do it better?
             .then(() => setAuthError(false))
             .then(() => history.push("/main-page"))
+            //TODO: add alert that user already exists
             .catch(() => setAuthError(true));
     }
 

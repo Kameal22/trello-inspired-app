@@ -8,7 +8,6 @@ export const AuthProvider = (props) => {
 
     const changeToken = (newToken) => {
         localStorage.setItem("jwt", newToken);
-        console.log("here")
         setToken(newToken);
     }
 

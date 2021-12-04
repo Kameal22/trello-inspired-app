@@ -1,7 +1,7 @@
 import React from 'react';
 import Sidebar from "../components/Sidebar/Sidebar";
 import AllBoardsPage from "./AllBoardsPage";
-import {HashRouter, Route, Switch, useRouteMatch} from "react-router-dom";
+import {Route, Switch, useRouteMatch} from "react-router-dom";
 import {Box} from "@mui/material";
 import BoardPage from "./BoardPage";
 import ManageBoardsPage from "./ManageBoardsPage";
@@ -23,8 +23,6 @@ const MainPage = () => {
                     <Switch>
                         <Route exact path={`${path}`} component={WelcomePage}/>
                         <Route exact path={`${path}/all-boards`} component={AllBoardsPage}/>
-                        //TODO: think about extracting id from jwt, delete route param and pass some boolean value
-                        like "fetchAll"
                         <Route exact path={`${path}/:userId/boards`}
                                component={routeParams => <AllBoardsPage
                                    userId={routeParams.match.params.userId}/>}/>

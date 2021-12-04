@@ -6,7 +6,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {useHistory} from "react-router-dom";
 import ConfirmDeleteBoardDialog from "../components/Board/ConfirmDeleteBoardDialog/ConfirmDeleteBoardDialog";
 import {deleteBoard, fetchBoardDetails, fetchBoardMembers} from "../services/board-service";
-import {NO_CONTENT, NOT_FOUND} from "../constants/http_statuses";
+import {FORBIDDEN, NO_CONTENT, NOT_FOUND, UNAUTHORIZED} from "../constants/http_statuses";
 import {deleteTask, editTask} from "../services/task-service";
 import {addTask, updateTasksInColumn} from "../services/column-service";
 import {AuthContext} from "../contexts/AuthContext";
@@ -207,7 +207,13 @@ const BoardPage = ({boardId}) => {
                 if (status === NO_CONTENT)
                     history.push("/main-page/all-boards");
             })
-            .catch(openAuthorizationError);
+            .catch(error => {
+                if (error.response.status === UNAUTHORIZED) {
+                    openAuthorizationError()
+                } else if (error.response.status === FORBIDDEN) {
+                    openForbiddenError();
+                }
+            });
     }
 
     const openAuthorizationError = () => {
@@ -215,7 +221,15 @@ const BoardPage = ({boardId}) => {
             open: true,
             type: "error",
             message: "You need to be logged in to do this"
-        })
+        });
+    }
+
+    const openForbiddenError = () => {
+        setSnackbar({
+            open: true,
+            type: "error",
+            message: "You need admin rights to do it"
+        });
     }
 
     const handleSnackbarClose = (event, reason) => {
