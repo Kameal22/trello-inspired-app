@@ -112,7 +112,7 @@ const BoardPage = ({boardId}) => {
 
 
     const handleEditTask = (editedTask, columnId, taskId) => {
-        editTask(taskId, editedTask)
+        editTask(taskId, editedTask, token)
             .then(() => updateTasks(editedTask, columnId, taskId))
             .then(editedTasks => setBoardDetails({
                 ...boardDetails,
@@ -153,7 +153,7 @@ const BoardPage = ({boardId}) => {
     }
 
     const handleDeleteTask = (taskId, columnId) => {
-        deleteTask(taskId)
+        deleteTask(taskId, token)
             .then(() => boardDetails.columns.find(column => column.columnId === columnId).tasks
                 .filter(task => task.taskId !== taskId)
             )
