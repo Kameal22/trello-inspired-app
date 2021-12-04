@@ -12,7 +12,6 @@ const BoardFormDialog = ({open, toggleDialog, addNewBoard}) => {
         toggleDialog();
     }
 
-    //TODO: handle getting response if board was successfully added
     const handleAddNewBoard = e => {
         e.preventDefault();
         if (!name) {

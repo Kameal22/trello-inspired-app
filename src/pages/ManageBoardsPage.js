@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Typography} from "@mui/material";
 import BoardAccordion from "../components/Board/BoardAccordion/BoardAccordion";
 import {ADMIN_ROLE} from "../utils/RoleUtils";
-import {fetchAllBoards, fetchBoardMembers, postAdminRights} from "../services/board-service";
+import {postAdminRights} from "../services/board-service";
 import {NO_CONTENT} from "../constants/http_statuses";
 import {fetchAllBoardsAndMembersForUser} from "../services/user-service";
+import {AuthContext} from "../contexts/AuthContext";
 
 const boardsPageStyle = {
     textAlign: "center",
@@ -13,17 +14,18 @@ const boardsPageStyle = {
 
 const ManageBoardsPage = ({userId}) => {
     const [boards, setBoards] = useState([]);
+    const {token} = useContext(AuthContext);
 
     useEffect(() => {
         const fetchBoards = async () => {
-            const boards = await fetchAllBoardsAndMembersForUser(userId);
+            const boards = await fetchAllBoardsAndMembersForUser(userId, token);
             setBoards(boards);
         }
         fetchBoards();
     }, [])
 
     const addAdminRights = (userId, boardId) => {
-        postAdminRights(boardId, userId)
+        postAdminRights(boardId, userId, token)
             .then(status => {
                 if (status === NO_CONTENT) {
                     const changedUsers = boards.find(board => board.boardId === boardId).members
