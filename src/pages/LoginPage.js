@@ -7,7 +7,7 @@ import {login} from "../services/auth-service";
 
 const LoginPage = () => {
     const history = useHistory();
-    const {token, handleChangingToken} = useContext(AuthContext);
+    const {changeToken} = useContext(AuthContext);
     const [username, updateUsername, resetUsername, usernameError, setUsernameError] = useInputState("");
     const [password, updatePassword, resetPassword, passwordError, setPasswordError] = useInputState("");
     const [authError, setAuthError] = useState(false);
@@ -19,7 +19,7 @@ const LoginPage = () => {
             password: password
         };
         login(credentials)
-            .then(handleChangingToken)
+            .then(changeToken)
             //TODO: do it better?
             .then(() => setAuthError(false))
             .then(() => history.push("/main-page"))

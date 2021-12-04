@@ -10,7 +10,7 @@ const boardIconStyle = {
 
 const BoardIcon = ({name, description, boardId}) => {
     return (
-        <Link to={`main-page/boards/${boardId}`} style={{textDecoration: 'none'}}>
+        <Link to={`/main-page/boards/${boardId}`} style={{textDecoration: 'none'}}>
             <Card sx={boardIconStyle}>
                 <CardContent>
                     <Typography gutterBottom variant="h5">

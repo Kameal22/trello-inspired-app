@@ -1,8 +1,9 @@
-import React from 'react';
-import {Divider, Drawer, List, ListItem, ListItemText, Toolbar, Typography} from "@mui/material";
+import React, {useContext} from 'react';
+import {Button, Divider, Drawer, List, ListItem, ListItemText, Toolbar, Typography} from "@mui/material";
 import {makeStyles} from '@mui/styles';
-import {NavLink, useRouteMatch} from "react-router-dom";
+import {Link, NavLink, useRouteMatch} from "react-router-dom";
 import "./Sidebar.css"
+import {AuthContext} from "../../contexts/AuthContext";
 
 const mockedUsername = "Lukasz";
 
@@ -23,11 +24,23 @@ const drawerStyles = {
 
 const Sidebar = () => {
     const styles = useStyles();
+    const {isAuthenticated, getUser} = useContext(AuthContext);
+
+    const loginButton = (
+        <Link to={`/login`} style={{textDecoration: 'none', width: "100%"}}>
+            <Button variant="contained" sx={{width: "100%"}}>
+                Login
+            </Button>
+        </Link>
+    )
     return (
         <Drawer sx={drawerStyles} variant="permanent" anchor="left" classes={{paper: styles.paper}}>
             <Toolbar>
-                {/*TODO: add real username from jwt*/}
-                <Typography style={{color: "#050079"}} variant="h5">Hello {mockedUsername}!</Typography>
+                {isAuthenticated() ?
+                    <Typography style={{color: "#050079"}} variant="h5">
+                        Hello {getUser().name}
+                    </Typography> :
+                    loginButton}
             </Toolbar>
             <Divider/>
             <List>
@@ -37,16 +50,18 @@ const Sidebar = () => {
                           activeClassName="active-link">
                     <ListItemText primary={"All boards"}/>
                 </ListItem>
-                {/*TODO insert user id here*/}
+                {isAuthenticated() &&
                 <ListItem button key={"Subscribed boards"} component={NavLink}
-                          exact to={"/main-page/1/boards"} activeClassName="active-link">
+                          exact to={`/main-page/${getUser().id}/boards`} activeClassName="active-link">
                     <ListItemText primary={"Subscribed boards"}/>
                 </ListItem>
-                {/*TODO insert user id here*/}
+                }
+                {isAuthenticated() &&
                 <ListItem button key={"Manage created boards"} component={NavLink}
-                          exact to={"/main-page/1/manage-boards"} activeClassName="active-link">
+                          exact to={`/main-page/${getUser().id}/manage-boards`} activeClassName="active-link">
                     <ListItemText primary={"Manage created boards"}/>
                 </ListItem>
+                }
             </List>
         </Drawer>
     );
