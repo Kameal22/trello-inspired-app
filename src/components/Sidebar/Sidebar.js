@@ -1,11 +1,9 @@
 import React, {useContext} from 'react';
 import {Button, Divider, Drawer, List, ListItem, ListItemText, Toolbar, Typography} from "@mui/material";
 import {makeStyles} from '@mui/styles';
-import {Link, NavLink, useRouteMatch} from "react-router-dom";
+import {NavLink, useHistory} from "react-router-dom";
 import "./Sidebar.css"
 import {AuthContext} from "../../contexts/AuthContext";
-
-const mockedUsername = "Lukasz";
 
 const useStyles = makeStyles({
     paper: {
@@ -19,28 +17,47 @@ const drawerStyles = {
     '& .MuiDrawer-paper': {
         boxSizing: 'border-box',
         width: '15%'
-    }
+    },
+    display: "flex",
+    height: "100%"
 }
 
 const Sidebar = () => {
     const styles = useStyles();
-    const {isAuthenticated, getUser} = useContext(AuthContext);
+    const {isAuthenticated, getUser, logout} = useContext(AuthContext);
+    const history = useHistory();
 
-    const loginButton = (
-        <Link to={`/login`} style={{textDecoration: 'none', width: "100%"}}>
-            <Button variant="contained" sx={{width: "100%"}}>
-                Login
-            </Button>
-        </Link>
+    const handleSignButton = () => {
+        if (isAuthenticated()) {
+            logout();
+        }
+
+        history.push("/login")
+    }
+
+    const userHeader = (
+        <Typography style={{color: "#050079"}} variant="h5">
+            Hello {isAuthenticated() ? getUser().name : "guest"}!
+        </Typography>
+    )
+
+    const signButton = (
+        <Button
+            onClick={handleSignButton}
+            sx={{
+                color: "white",
+                width: "100%"
+            }}
+            color="info"
+            size="large"
+            variant="outlined">
+            {isAuthenticated() ? 'Sign out' : 'Sign in'}
+        </Button>
     )
     return (
         <Drawer sx={drawerStyles} variant="permanent" anchor="left" classes={{paper: styles.paper}}>
             <Toolbar>
-                {isAuthenticated() ?
-                    <Typography style={{color: "#050079"}} variant="h5">
-                        Hello {getUser().name}
-                    </Typography> :
-                    loginButton}
+                {userHeader}
             </Toolbar>
             <Divider/>
             <List>
@@ -62,6 +79,9 @@ const Sidebar = () => {
                     <ListItemText primary={"Manage created boards"}/>
                 </ListItem>
                 }
+            </List>
+            <List style={{marginTop: "auto"}}>
+                {signButton}
             </List>
         </Drawer>
     );
