@@ -78,36 +78,59 @@ const BoardPage = ({boardId}) => {
     }
 
     const handleChangeColumn = (source, destination) => {
-        let sourceTasks = [...boardDetails.columns.find(column => column.columnId.toString() === source.droppableId).tasks];
+        const sourceTasksBackup = [...boardDetails.columns.find(column => column.columnId.toString() === source.droppableId).tasks];
+        let sourceTasks = [...sourceTasksBackup];
         const [removedTask] = sourceTasks.splice(source.index, 1);
 
-        let destinationTasks = [...boardDetails.columns.find(column => column.columnId.toString() === destination.droppableId).tasks];
+        const destinationTasksBackup = [...boardDetails.columns.find(column => column.columnId.toString() === destination.droppableId).tasks];
+        let destinationTasks = [...destinationTasksBackup];
         destinationTasks.splice(destination.index, 0, removedTask);
 
         const destinationTaskIds = destinationTasks.map(task => task.taskId);
 
+        const editedColumns = boardDetails.columns
+            .map(column => column.columnId.toString() === source.droppableId ?
+                {
+                    ...column,
+                    tasks: sourceTasks
+                }
+                :
+                column)
+            .map(column => column.columnId.toString() === destination.droppableId ?
+                {
+                    ...column,
+                    tasks: destinationTasks
+                }
+                :
+                column);
+        setBoardDetails({
+            ...boardDetails,
+            columns: editedColumns
+        });
+
         updateTasksInColumn(destinationTaskIds, destination.droppableId, token)
-            .then(() => boardDetails.columns
-                .map(column => column.columnId.toString() === source.droppableId ?
-                    {
-                        ...column,
-                        tasks: sourceTasks
-                    }
-                    :
-                    column)
-                .map(column => column.columnId.toString() === destination.droppableId ?
-                    {
-                        ...column,
-                        tasks: destinationTasks
-                    }
-                    :
-                    column))
-            .then(editedColumns => setBoardDetails({
+            .catch(() => {
+                const editedColumns = boardDetails.columns
+                    .map(column => column.columnId.toString() === source.droppableId ?
+                        {
+                            ...column,
+                            tasks: sourceTasksBackup
+                        }
+                        :
+                        column)
+                    .map(column => column.columnId.toString() === destination.droppableId ?
+                        {
+                            ...column,
+                            tasks: destinationTasksBackup
+                        }
+                        :
+                        column);
+                setBoardDetails({
                     ...boardDetails,
                     columns: editedColumns
-                })
-            )
-            .catch(openAuthorizationError);
+                });
+                openAuthorizationError()
+            });
     }
 
 
