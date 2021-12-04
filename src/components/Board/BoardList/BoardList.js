@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Button, Card, Grid} from "@mui/material";
 import BoardIcon from "../BoardIcon/BoardIcon";
 import AddIcon from "@mui/icons-material/Add";
 import BoardFormDialog from "../BoardFormDialog/BoardFormDialog";
 import {fetchAllBoards, postBoard} from "../../../services/board-service";
 import {fetchAllBoardsForUser} from "../../../services/user-service";
+import {AuthContext} from "../../../contexts/AuthContext";
 
 const addButtonStyle = {
     height: 150,
@@ -15,6 +16,7 @@ const addButtonStyle = {
 const BoardList = ({userId}) => {
     const [boards, setBoards] = useState([]);
     const [open, setOpen] = useState(false);
+    const {token} = useContext(AuthContext);
 
     useEffect(() => {
         const fetchBoards = async () => {
@@ -39,7 +41,7 @@ const BoardList = ({userId}) => {
             description: description
         }
 
-        postBoard(newBoard)
+        postBoard(newBoard, token)
             .then(id => {
                 newBoard.boardId = id;
                 setBoards([...boards, newBoard]);
