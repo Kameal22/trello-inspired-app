@@ -18,7 +18,7 @@ const ManageBoardsPage = ({userId}) => {
 
     useEffect(() => {
         const fetchBoards = async () => {
-            const boards = await fetchAllBoardsAndMembersForUser(userId);
+            const boards = await fetchAllBoardsAndMembersForUser(userId, token);
             setBoards(boards);
         }
         fetchBoards();

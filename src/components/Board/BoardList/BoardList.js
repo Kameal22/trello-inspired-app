@@ -24,7 +24,7 @@ const BoardList = ({userId}) => {
             setBoards(boards);
         }
         const fetchBoardsForUser = async () => {
-            const boards = await fetchAllBoardsForUser(userId);
+            const boards = await fetchAllBoardsForUser(userId, token);
             setBoards(boards);
         }
         //TODO: this probably could be done better
