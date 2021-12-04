@@ -1,7 +1,7 @@
 import MainPage from "./pages/MainPage";
 import {AuthProvider} from "./contexts/AuthContext";
 import LoginPage from "./pages/LoginPage";
-import {Redirect, Route, Router, Switch} from "react-router-dom";
+import {Redirect, Route, Switch} from "react-router-dom";
 import RegisterPage from "./pages/RegisterPage";
 
 const App = () => {

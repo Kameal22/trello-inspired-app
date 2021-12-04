@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Alert, Grid, Snackbar, Typography} from "@mui/material";
 import Column from "../components/Column/Column";
 import {DragDropContext, Droppable} from "react-beautiful-dnd";
@@ -9,6 +9,7 @@ import {deleteBoard, fetchBoardDetails, fetchBoardMembers} from "../services/boa
 import {NO_CONTENT, NOT_FOUND} from "../constants/http_statuses";
 import {deleteTask, editTask} from "../services/task-service";
 import {addTask, updateTasksInColumn} from "../services/column-service";
+import {AuthContext} from "../contexts/AuthContext";
 
 const deleteIconStyle = {
     float: "right",
@@ -27,6 +28,7 @@ const BoardPage = ({boardId}) => {
     });
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const history = useHistory();
+    const {token} = useContext(AuthContext);
 
     useEffect(() => {
         fetchBoardDetails(boardId)
@@ -84,7 +86,7 @@ const BoardPage = ({boardId}) => {
 
         const destinationTaskIds = destinationTasks.map(task => task.taskId);
 
-        updateTasksInColumn(destinationTaskIds, destination.droppableId)
+        updateTasksInColumn(destinationTaskIds, destination.droppableId, token)
             .then(() => boardDetails.columns
                 .map(column => column.columnId.toString() === source.droppableId ?
                     {
@@ -175,7 +177,7 @@ const BoardPage = ({boardId}) => {
     }
 
     const handleAddNewTask = (task, columnId) => {
-        addTask(columnId, task)
+        addTask(columnId, task, token)
             .then(newTask => {
                 let tasks = boardDetails.columns.find(column => column.columnId === columnId).tasks;
                 return [...tasks, newTask];
@@ -200,7 +202,7 @@ const BoardPage = ({boardId}) => {
     }
 
     const handleDeleteBoard = boardId => {
-        deleteBoard(boardId)
+        deleteBoard(boardId, token)
             .then(status => {
                 if (status === NO_CONTENT)
                     history.push("/main-page/all-boards");

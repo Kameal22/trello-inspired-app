@@ -32,7 +32,7 @@ export const fetchBoardDetails = boardId => {
         .then(response => response.data);
 }
 
-export const deleteBoard = boardId => {
+export const deleteBoard = (boardId, token) => {
     return axios.delete(`${BASE_URL}/boards/${boardId}`, {
         headers: {
             Authorization: `Bearer ${token}`
