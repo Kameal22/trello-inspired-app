@@ -1,9 +1,10 @@
 import React, {useContext, useState} from 'react';
-import {Box, Button, TextField, Typography} from "@mui/material";
+import {Alert, Box, Button, Snackbar, TextField, Typography} from "@mui/material";
 import {Link, useHistory} from "react-router-dom";
 import {AuthContext} from "../contexts/AuthContext";
 import useInputState from "../hooks/useInputState";
 import {login} from "../services/auth-service";
+import {BAD_REQUEST, UNAUTHORIZED} from "../constants/http_statuses";
 
 const LoginPage = () => {
     const history = useHistory();
@@ -11,19 +12,53 @@ const LoginPage = () => {
     const [username, updateUsername, resetUsername, usernameError, setUsernameError] = useInputState("");
     const [password, updatePassword, resetPassword, passwordError, setPasswordError] = useInputState("");
     const [authError, setAuthError] = useState(false);
+    const [snackbar, setSnackbar] = useState({
+        open: false,
+        type: "info",
+        message: ""
+    });
 
     const handleLogin = e => {
         e.preventDefault();
+        setUsernameError(false);
+        setPasswordError(false);
+        setAuthError(false);
+
         const credentials = {
             username: username,
             password: password
         };
         login(credentials)
             .then(changeToken)
-            //TODO: do it better?
             .then(() => setAuthError(false))
             .then(() => history.push("/main-page"))
-            .catch(() => setAuthError(true));
+            .catch(handleAuthError);
+    }
+
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setSnackbar({...snackbar, open: false});
+    }
+
+    const handleAuthError = error => {
+        if (error.response.status === BAD_REQUEST) {
+            if (error.response.data.validationErrors.username) {
+                setUsernameError(true);
+            }
+            if (error.response.data.validationErrors.password) {
+                setPasswordError(true);
+            }
+        } else if (error.response.status === UNAUTHORIZED) {
+            setAuthError(true)
+            setSnackbar({
+                open: true,
+                type: "error",
+                message: "Bad username or password"
+            })
+        }
     }
 
     return (
@@ -51,7 +86,8 @@ const LoginPage = () => {
                     name="username"
                     autoComplete="username"
                     autoFocus
-                    error={authError}
+                    error={usernameError || authError}
+                    helperText={usernameError ? "Username can't be blank" : ""}
                     value={username}
                     onChange={updateUsername}
                 />
@@ -63,7 +99,8 @@ const LoginPage = () => {
                     label="Password"
                     type="password"
                     id="password"
-                    error={authError}
+                    error={passwordError || authError}
+                    helperText={passwordError ? "Password must be at least 8 characters" : ""}
                     value={password}
                     onChange={updatePassword}
                 />
@@ -85,6 +122,11 @@ const LoginPage = () => {
                     </Button>
                 </Link>
             </Box>
+            <Snackbar open={snackbar.open} autoHideDuration={3000} onClose={handleSnackbarClose}>
+                <Alert onClose={handleSnackbarClose} severity={snackbar.type} sx={{width: '100%'}}>
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
         </Box>
     );
 };
