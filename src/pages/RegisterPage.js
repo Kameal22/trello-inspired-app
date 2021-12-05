@@ -1,21 +1,31 @@
 import React, {useContext, useState} from 'react';
-import {Box, Button, TextField, Typography} from "@mui/material";
+import {Alert, Box, Button, Snackbar, TextField, Typography} from "@mui/material";
 import {Link, useHistory} from "react-router-dom";
 import {AuthContext} from "../contexts/AuthContext";
 import useInputState from "../hooks/useInputState";
 import {register} from "../services/auth-service";
+import {BAD_REQUEST, CONFLICT} from "../constants/http_statuses";
 
 const RegisterPage = () => {
     const history = useHistory();
     const {token, changeToken} = useContext(AuthContext);
     const [username, updateUsername, resetUsername, usernameError, setUsernameError] = useInputState("");
     const [password, updatePassword, resetPassword, passwordError, setPasswordError] = useInputState("");
-    const [name, updateName] = useInputState("");
-    const [surname, updateSurname] = useInputState("");
+    const [name, updateName, resetName, nameError, setNameError] = useInputState("");
+    const [surname, updateSurname, resetSurname, surnameError, setSurnameError] = useInputState("");
     const [authError, setAuthError] = useState(false);
+    const [snackbar, setSnackbar] = useState({
+        open: false,
+        type: "info",
+        message: ""
+    });
 
     const handleRegister = e => {
         e.preventDefault();
+        setUsernameError(false);
+        setPasswordError(false);
+        setNameError(false);
+        setSurnameError(false);
 
         const userDetails = {
             username: username,
@@ -26,11 +36,41 @@ const RegisterPage = () => {
 
         register(userDetails)
             .then(changeToken)
-            //TODO: do it better?
             .then(() => setAuthError(false))
             .then(() => history.push("/main-page"))
             //TODO: add alert that user already exists
-            .catch(() => setAuthError(true));
+            .catch(handleAuthError);
+    }
+
+    const handleAuthError = error => {
+        if (error.response.status === BAD_REQUEST) {
+            if (error.response.data.validationErrors.username) {
+                setUsernameError(true);
+            }
+            if (error.response.data.validationErrors.password) {
+                setPasswordError(true);
+            }
+            if (error.response.data.validationErrors.name) {
+                setNameError(true);
+            }
+            if (error.response.data.validationErrors.surname) {
+                setSurnameError(true);
+            }
+        } else if (error.response.status === CONFLICT) {
+            setSnackbar({
+                open: true,
+                type: "error",
+                message: "Username is already taken"
+            });
+        }
+    }
+
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setSnackbar({...snackbar, open: false});
     }
 
     return (
@@ -58,7 +98,8 @@ const RegisterPage = () => {
                     name="username"
                     autoComplete="username"
                     autoFocus
-                    error={authError}
+                    error={usernameError}
+                    helperText={usernameError ? "Username can't be blank" : ""}
                     value={username}
                     onChange={updateUsername}
                 />
@@ -70,7 +111,8 @@ const RegisterPage = () => {
                     label="Password"
                     type="password"
                     id="password"
-                    error={authError}
+                    error={passwordError}
+                    helperText={passwordError ? "Password must be at least 8 characters" : ""}
                     value={password}
                     onChange={updatePassword}
                 />
@@ -82,7 +124,8 @@ const RegisterPage = () => {
                     label="Name"
                     name="name"
                     sx={{mt: 3}}
-                    error={authError}
+                    error={nameError}
+                    helperText={nameError ? "Name can't be blank" : ""}
                     value={name}
                     onChange={updateName}
                 />
@@ -93,7 +136,8 @@ const RegisterPage = () => {
                     id="surname"
                     label="Surname"
                     name="surname"
-                    error={authError}
+                    error={surnameError}
+                    helperText={surnameError ? "Surname can't be blank" : ""}
                     value={surname}
                     onChange={updateSurname}
                 />
@@ -115,6 +159,11 @@ const RegisterPage = () => {
                     </Button>
                 </Link>
             </Box>
+            <Snackbar open={snackbar.open} autoHideDuration={3000} onClose={handleSnackbarClose}>
+                <Alert onClose={handleSnackbarClose} severity={snackbar.type} sx={{width: '100%'}}>
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
         </Box>
     );
 };
