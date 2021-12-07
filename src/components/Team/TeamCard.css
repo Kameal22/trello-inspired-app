@@ -1,0 +1,19 @@
+.team-card {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.team-card-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.team-card-button {
+    display: flex;
+    flex-direction: row;
+}

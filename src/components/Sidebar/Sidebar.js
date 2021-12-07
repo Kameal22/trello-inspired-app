@@ -67,18 +67,21 @@ const Sidebar = () => {
                           activeClassName="active-link">
                     <ListItemText primary={"All boards"}/>
                 </ListItem>
-                {isAuthenticated() &&
-                <ListItem button key={"Subscribed boards"} component={NavLink}
-                          exact to={`/main-page/${getUser().id}/boards`} activeClassName="active-link">
-                    <ListItemText primary={"Subscribed boards"}/>
+                {isAuthenticated() && (
+                    <>
+                        <ListItem button key={"Subscribed boards"} component={NavLink}
+                                  exact to={`/main-page/${getUser().id}/boards`} activeClassName="active-link">
+                            <ListItemText primary={"Subscribed boards"}/>
+                        </ListItem>
+                        <ListItem button key={"Manage created boards"} component={NavLink}
+                                  exact to={`/main-page/${getUser().id}/manage-boards`} activeClassName="active-link">
+                            <ListItemText primary={"Manage created boards"}/>
+                        </ListItem>
+                    </>)}
+                <ListItem button key={"All teams"} component={NavLink}
+                          exact to={`/main-page/all-teams`} activeClassName="active-link">
+                    <ListItemText primary={"All teams"}/>
                 </ListItem>
-                }
-                {isAuthenticated() &&
-                <ListItem button key={"Manage created boards"} component={NavLink}
-                          exact to={`/main-page/${getUser().id}/manage-boards`} activeClassName="active-link">
-                    <ListItemText primary={"Manage created boards"}/>
-                </ListItem>
-                }
             </List>
             <List style={{marginTop: "auto"}}>
                 {signButton}

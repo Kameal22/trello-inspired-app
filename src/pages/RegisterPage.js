@@ -38,7 +38,6 @@ const RegisterPage = () => {
             .then(changeToken)
             .then(() => setAuthError(false))
             .then(() => history.push("/main-page"))
-            //TODO: add alert that user already exists
             .catch(handleAuthError);
     }
 

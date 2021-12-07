@@ -7,6 +7,7 @@ import BoardPage from "./BoardPage";
 import ManageBoardsPage from "./ManageBoardsPage";
 import NotFoundPage from "./NotFoundPage";
 import WelcomePage from "./WelcomePage";
+import TeamsPage from "./TeamsPage";
 
 const MainPage = () => {
     const {path} = useRouteMatch();
@@ -31,6 +32,7 @@ const MainPage = () => {
                                    userId={routeParams.match.params.userId}/>}/>
                         <Route exact path={`${path}/boards/:boardId`}
                                render={routeParams => <BoardPage boardId={routeParams.match.params.boardId}/>}/>
+                        <Route exact path={`${path}/all-teams`} component={TeamsPage}/>
                         <Route component={NotFoundPage}/>
                     </Switch>
                 </Box>

@@ -12,7 +12,6 @@ const BoardMembersTable = ({members, boardId, addAdminRights}) => {
             <TableCell>
                 <>
                     <span>{getRoleString(member.role)}</span>
-                    {/*TODO: when integrated with backend check if user that clicks is admin to this board*/}
                     {member.role === MEMBER_ROLE &&
                     <Button variant="contained"
                             size="small"
