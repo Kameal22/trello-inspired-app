@@ -9,7 +9,7 @@ const ConfirmDeleteBoardDialog = ({open, toggleDialog, boardId, name, deleteBoar
     }
 
     return (
-        <Dialog open={open} onClose={toggleDialog}>
+        <Dialog open={open} onClose={toggleDialog} fullWidth>
             <DialogTitle>
                 Do you really want to delete board {name}?
             </DialogTitle>

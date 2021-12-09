@@ -2,19 +2,40 @@ import React, {useContext} from 'react';
 import {Button, Card, Typography} from "@mui/material";
 import './TeamCard.css';
 import {AuthContext} from "../../contexts/AuthContext";
+import {useHistory} from "react-router-dom";
+import {joinTeam} from "../../services/team-service";
 
 const TeamCard = (team) => {
-    const {isAuthenticated, getUser} = useContext(AuthContext);
+    const {token, isAuthenticated, getUser} = useContext(AuthContext);
+    const history = useHistory();
+
+    const handleJoinTeam = () => {
+        joinTeam(team.teamId, getUser().id, token)
+            .then(openTeam);
+    }
+
+    const openTeam = () => {
+        history.push(`/main-page/teams/${team.teamId}/boards`);
+    }
 
     let button;
-
     if (isAuthenticated()) {
         const user = getUser();
 
         if (team.members.some(member => member.userId === user.id)) {
-            button = <Button variant="outlined" sx={{color: "white"}}>Open team</Button>
+            button = <Button
+                variant="outlined"
+                sx={{color: "white"}}
+                onClick={openTeam}>
+                Open team
+            </Button>
         } else {
-            button = <Button variant="outlined" sx={{color: "white"}}>Join team</Button>
+            button = <Button
+                variant="outlined"
+                sx={{color: "white"}}
+                onClick={handleJoinTeam}>
+                Join team
+            </Button>
         }
     }
 
@@ -28,7 +49,8 @@ const TeamCard = (team) => {
             <div className="team-card">
                 <div className="team-card-info">
                     <Typography variant="h4">{team.name}</Typography>
-                    <Typography variant="p" sx={{marginRight: 1}}>{memberCount} member{memberCount > 1 && "s"}</Typography>
+                    <Typography variant="p"
+                                sx={{marginRight: 1}}>{memberCount} member{memberCount > 1 && "s"}</Typography>
                 </div>
                 <div className="team-card-button">
                     {button}
