@@ -21,3 +21,11 @@ export const joinTeam = (teamId, userId, token) => {
         }
     });
 }
+
+export const fetchAllBoardsForTeam = (teamId, token) => {
+    return axios.get(`${BASE_URL}/teams/${teamId}/boards`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }).then(response => response.data);
+}

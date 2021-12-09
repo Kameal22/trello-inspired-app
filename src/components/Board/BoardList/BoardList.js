@@ -6,6 +6,7 @@ import BoardFormDialog from "../BoardFormDialog/BoardFormDialog";
 import {fetchAllBoards, postBoard} from "../../../services/board-service";
 import {fetchAllBoardsForUser} from "../../../services/user-service";
 import {AuthContext} from "../../../contexts/AuthContext";
+import {fetchAllBoardsForTeam} from "../../../services/team-service";
 
 const addButtonStyle = {
     height: 150,
@@ -13,7 +14,7 @@ const addButtonStyle = {
     justifyContent: 'center'
 };
 
-const BoardList = ({userId}) => {
+const BoardList = ({userId, teamId}) => {
     const [boards, setBoards] = useState([]);
     const [open, setOpen] = useState(false);
     const {token} = useContext(AuthContext);
@@ -27,9 +28,15 @@ const BoardList = ({userId}) => {
             const boards = await fetchAllBoardsForUser(userId, token);
             setBoards(boards);
         }
+        const fetchBoardsForTeam = async () => {
+            const boards = await fetchAllBoardsForTeam(teamId, token);
+            setBoards(boards);
+        }
         //TODO: this probably could be done better
         if (userId) {
             fetchBoardsForUser();
+        } else if (teamId) {
+            fetchBoardsForTeam();
         } else {
             fetchBoards();
         }

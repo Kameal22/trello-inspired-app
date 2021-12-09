@@ -8,6 +8,7 @@ import ManageBoardsPage from "./ManageBoardsPage";
 import NotFoundPage from "./NotFoundPage";
 import WelcomePage from "./WelcomePage";
 import TeamsPage from "./TeamsPage";
+import TeamsBoardPage from "./TeamsBoardPage";
 
 const MainPage = () => {
     const {path} = useRouteMatch();
@@ -25,14 +26,14 @@ const MainPage = () => {
                         <Route exact path={`${path}`} component={WelcomePage}/>
                         <Route exact path={`${path}/all-boards`} component={AllBoardsPage}/>
                         <Route exact path={`${path}/:userId/boards`}
-                               component={routeParams => <AllBoardsPage
-                                   userId={routeParams.match.params.userId}/>}/>
+                               component={routeParams => <AllBoardsPage userId={routeParams.match.params.userId}/>}/>
                         <Route exact path={`${path}/:userId/manage-boards`}
-                               render={routeParams => <ManageBoardsPage
-                                   userId={routeParams.match.params.userId}/>}/>
+                               render={routeParams => <ManageBoardsPage userId={routeParams.match.params.userId}/>}/>
                         <Route exact path={`${path}/boards/:boardId`}
                                render={routeParams => <BoardPage boardId={routeParams.match.params.boardId}/>}/>
                         <Route exact path={`${path}/all-teams`} component={TeamsPage}/>
+                        <Route exact path={`${path}/teams/:teamId/boards`}
+                               component={routeParams => <TeamsBoardPage teamId={routeParams.match.params.teamId}/>}/>
                         <Route component={NotFoundPage}/>
                     </Switch>
                 </Box>
