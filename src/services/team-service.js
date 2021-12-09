@@ -29,3 +29,11 @@ export const fetchAllBoardsForTeam = (teamId, token) => {
         }
     }).then(response => response.data);
 }
+
+export const postTeamBoard = (board, teamId, token) => {
+    return axios.post(`${BASE_URL}/teams/${teamId}/boards`, board, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }).then(response => response.data);
+}

@@ -6,7 +6,7 @@ import BoardFormDialog from "../BoardFormDialog/BoardFormDialog";
 import {fetchAllBoards, postBoard} from "../../../services/board-service";
 import {fetchAllBoardsForUser} from "../../../services/user-service";
 import {AuthContext} from "../../../contexts/AuthContext";
-import {fetchAllBoardsForTeam} from "../../../services/team-service";
+import {fetchAllBoardsForTeam, postTeamBoard} from "../../../services/team-service";
 
 const addButtonStyle = {
     height: 150,
@@ -48,11 +48,16 @@ const BoardList = ({userId, teamId}) => {
             description: description
         }
 
-        postBoard(newBoard, token)
-            .then(id => {
-                newBoard.boardId = id;
-                setBoards([...boards, newBoard]);
-            });
+        if (teamId) {
+            postTeamBoard(newBoard, teamId, token)
+                .then(board => setBoards([...boards, board]));
+        } else {
+            postBoard(newBoard, token)
+                .then(id => {
+                    newBoard.boardId = id;
+                    setBoards([...boards, newBoard]);
+                });
+        }
     }
 
     const toggleDialog = () => {
@@ -74,7 +79,7 @@ const BoardList = ({userId, teamId}) => {
                     </Button>
                 </Card>
             </Grid>
-            <BoardFormDialog open={open} toggleDialog={toggleDialog} addNewBoard={addNewBoard}/>
+            <BoardFormDialog open={open} toggleDialog={toggleDialog} addNewBoard={addNewBoard} teamId={teamId}/>
         </Grid>
     );
 };

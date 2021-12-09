@@ -64,22 +64,22 @@ const Sidebar = () => {
                 <ListItem button key={"All boards"}
                           component={NavLink}
                           exact to={"/main-page/all-boards"}
-                          activeClassName="active-link">
+                          activeClassName="Mui-selected">
                     <ListItemText primary={"All boards"}/>
                 </ListItem>
                 {isAuthenticated() && (
                     <>
                         <ListItem button key={"Subscribed boards"} component={NavLink}
-                                  exact to={`/main-page/${getUser().id}/boards`} activeClassName="active-link">
+                                  exact to={`/main-page/${getUser().id}/boards`} activeClassName="Mui-selected">
                             <ListItemText primary={"Subscribed boards"}/>
                         </ListItem>
                         <ListItem button key={"Manage created boards"} component={NavLink}
-                                  exact to={`/main-page/${getUser().id}/manage-boards`} activeClassName="active-link">
+                                  exact to={`/main-page/${getUser().id}/manage-boards`} activeClassName="Mui-selected">
                             <ListItemText primary={"Manage created boards"}/>
                         </ListItem>
                     </>)}
                 <ListItem button key={"All teams"} component={NavLink}
-                          exact to={`/main-page/all-teams`} activeClassName="active-link">
+                          exact to={`/main-page/all-teams`} activeClassName="Mui-selected">
                     <ListItemText primary={"All teams"}/>
                 </ListItem>
             </List>
