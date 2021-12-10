@@ -6,6 +6,7 @@ import BoardFormDialog from "../BoardFormDialog/BoardFormDialog";
 import {fetchAllBoards, postBoard} from "../../../services/board-service";
 import {fetchAllBoardsForUser} from "../../../services/user-service";
 import {AuthContext} from "../../../contexts/AuthContext";
+import {fetchAllBoardsForTeam, postTeamBoard} from "../../../services/team-service";
 
 const addButtonStyle = {
     height: 150,
@@ -13,7 +14,7 @@ const addButtonStyle = {
     justifyContent: 'center'
 };
 
-const BoardList = ({userId}) => {
+const BoardList = ({userId, teamId}) => {
     const [boards, setBoards] = useState([]);
     const [open, setOpen] = useState(false);
     const {token} = useContext(AuthContext);
@@ -27,9 +28,15 @@ const BoardList = ({userId}) => {
             const boards = await fetchAllBoardsForUser(userId, token);
             setBoards(boards);
         }
+        const fetchBoardsForTeam = async () => {
+            const boards = await fetchAllBoardsForTeam(teamId, token);
+            setBoards(boards);
+        }
         //TODO: this probably could be done better
         if (userId) {
             fetchBoardsForUser();
+        } else if (teamId) {
+            fetchBoardsForTeam();
         } else {
             fetchBoards();
         }
@@ -41,11 +48,16 @@ const BoardList = ({userId}) => {
             description: description
         }
 
-        postBoard(newBoard, token)
-            .then(id => {
-                newBoard.boardId = id;
-                setBoards([...boards, newBoard]);
-            });
+        if (teamId) {
+            postTeamBoard(newBoard, teamId, token)
+                .then(board => setBoards([...boards, board]));
+        } else {
+            postBoard(newBoard, token)
+                .then(id => {
+                    newBoard.boardId = id;
+                    setBoards([...boards, newBoard]);
+                });
+        }
     }
 
     const toggleDialog = () => {
@@ -67,7 +79,7 @@ const BoardList = ({userId}) => {
                     </Button>
                 </Card>
             </Grid>
-            <BoardFormDialog open={open} toggleDialog={toggleDialog} addNewBoard={addNewBoard}/>
+            <BoardFormDialog open={open} toggleDialog={toggleDialog} addNewBoard={addNewBoard} teamId={teamId}/>
         </Grid>
     );
 };

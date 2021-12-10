@@ -4,7 +4,7 @@ import Column from "../components/Column/Column";
 import {DragDropContext, Droppable} from "react-beautiful-dnd";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useHistory} from "react-router-dom";
-import ConfirmDeleteBoardDialog from "../components/Board/ConfirmDeleteBoardDialog/ConfirmDeleteBoardDialog";
+import ConfirmDeleteDialog from "../components/ConfirmDeleteDialog";
 import {deleteBoard, fetchBoardDetails, fetchBoardMembers} from "../services/board-service";
 import {FORBIDDEN, NO_CONTENT, NOT_FOUND, UNAUTHORIZED} from "../constants/http_statuses";
 import {deleteTask, editTask} from "../services/task-service";
@@ -29,13 +29,16 @@ const BoardPage = ({boardId}) => {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const history = useHistory();
     const {token} = useContext(AuthContext);
+    const [authorizationError, setAuthorizationError] = useState("")
 
     useEffect(() => {
-        fetchBoardDetails(boardId)
+        fetchBoardDetails(boardId, token)
             .then(details => setBoardDetails(details))
             .catch(error => {
                 if (error.response.status === NOT_FOUND) {
                     setBoardNotFound(true);
+                } else if (error.response.status === UNAUTHORIZED || error.response.status === FORBIDDEN) {
+                    setAuthorizationError(error.response.data.description);
                 }
             });
     }, [])
@@ -280,6 +283,12 @@ const BoardPage = ({boardId}) => {
             </Droppable>
         </Grid>);
 
+    if (authorizationError) {
+        return <Typography variant="h3" style={{height: '10%', marginTop: 20}}>
+            {authorizationError}
+        </Typography>
+    }
+
     return (
         <div style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
             <div>
@@ -293,11 +302,11 @@ const BoardPage = ({boardId}) => {
                     {columnItems}
                 </Grid>
             </DragDropContext>
-            <ConfirmDeleteBoardDialog
+            <ConfirmDeleteDialog
                 open={deleteDialogOpen}
-                deleteBoard={handleDeleteBoard}
+                deleteFunction={handleDeleteBoard}
                 toggleDialog={toggleDeleteDialog}
-                boardId={boardId}
+                itemId={boardId}
                 name={boardDetails.name}
             />
             <Snackbar open={snackbar.open} autoHideDuration={3000} onClose={handleSnackbarClose}>

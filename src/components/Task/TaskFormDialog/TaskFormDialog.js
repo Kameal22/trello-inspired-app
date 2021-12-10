@@ -37,7 +37,7 @@ const TaskFormDialog = ({open, toggleDialog, addNewTask, columnId}) => {
     }
 
     return (
-        <Dialog open={open} onClose={closeDialog}>
+        <Dialog open={open} onClose={closeDialog} fullWidth>
             <DialogTitle>
                 Add new task
             </DialogTitle>

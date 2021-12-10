@@ -27,9 +27,12 @@ export const postAdminRights = (boardId, userId, token) => {
     }).then(response => response.status);
 }
 
-export const fetchBoardDetails = boardId => {
-    return axios.get(`${BASE_URL}/boards/${boardId}`)
-        .then(response => response.data);
+export const fetchBoardDetails = (boardId, token) => {
+    return axios.get(`${BASE_URL}/boards/${boardId}`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }).then(response => response.data);
 }
 
 export const deleteBoard = (boardId, token) => {
