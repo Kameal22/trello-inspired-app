@@ -1,17 +1,17 @@
 import React from 'react';
 import {Button, Dialog, DialogActions, DialogTitle} from "@mui/material";
 
-const ConfirmDeleteBoardDialog = ({open, toggleDialog, boardId, name, deleteBoard}) => {
+const ConfirmDeleteDialog = ({open, toggleDialog, itemId, name, deleteFunction}) => {
 
     const handleDeletingBoard = () => {
-        deleteBoard(boardId)
+        deleteFunction(itemId);
         toggleDialog();
     }
 
     return (
         <Dialog open={open} onClose={toggleDialog} fullWidth>
             <DialogTitle>
-                Do you really want to delete board {name}?
+                Do you really want to delete {name}?
             </DialogTitle>
             <DialogActions style={{justifyContent: "center"}}>
                 <Button variant="contained" color="error" onClick={handleDeletingBoard}>Yes</Button>
@@ -21,4 +21,4 @@ const ConfirmDeleteBoardDialog = ({open, toggleDialog, boardId, name, deleteBoar
     );
 };
 
-export default ConfirmDeleteBoardDialog;
+export default ConfirmDeleteDialog;

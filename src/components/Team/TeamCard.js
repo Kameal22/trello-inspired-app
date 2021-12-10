@@ -1,36 +1,51 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {Button, Card, Typography} from "@mui/material";
 import './TeamCard.css';
 import {AuthContext} from "../../contexts/AuthContext";
 import {useHistory} from "react-router-dom";
 import {joinTeam} from "../../services/team-service";
+import ConfirmDeleteDialog from "../ConfirmDeleteDialog";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-const TeamCard = (team) => {
+const deleteIconStyle = {
+    cursor: "pointer",
+    marginRight: 20
+};
+
+const TeamCard = ({teamId, members, name, deleteTeam}) => {
     const {token, isAuthenticated, getUser} = useContext(AuthContext);
     const history = useHistory();
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
+    const toggleDeleteDialog = () => {
+        setDeleteDialogOpen(!deleteDialogOpen);
+    }
 
     const handleJoinTeam = () => {
-        joinTeam(team.teamId, getUser().id, token)
+        joinTeam(teamId, getUser().id, token)
             .then(openTeam);
     }
 
     const openTeam = () => {
-        history.push(`/main-page/teams/${team.teamId}/boards`);
+        history.push(`/main-page/teams/${teamId}/boards`);
     }
 
-    let button;
+    let buttons;
     if (isAuthenticated()) {
         const user = getUser();
 
-        if (team.members.some(member => member.userId === user.id)) {
-            button = <Button
-                variant="outlined"
-                sx={{color: "white"}}
-                onClick={openTeam}>
-                Open team
-            </Button>
+        if (members.some(member => member.userId === user.id)) {
+            buttons = <>
+                <DeleteIcon style={deleteIconStyle} onClick={toggleDeleteDialog} fontSize="large"/>
+                <Button
+                    variant="outlined"
+                    sx={{color: "white"}}
+                    onClick={openTeam}>
+                    Open team
+                </Button>
+            </>
         } else {
-            button = <Button
+            buttons = <Button
                 variant="outlined"
                 sx={{color: "white"}}
                 onClick={handleJoinTeam}>
@@ -39,7 +54,7 @@ const TeamCard = (team) => {
         }
     }
 
-    const memberCount = team.members.length;
+    const memberCount = members.length;
     return (
         <Card variant="outlined" sx={{
             backgroundColor: "rgb(62,60,60)",
@@ -48,14 +63,21 @@ const TeamCard = (team) => {
         }}>
             <div className="team-card">
                 <div className="team-card-info">
-                    <Typography variant="h4">{team.name}</Typography>
+                    <Typography variant="h4">{name}</Typography>
                     <Typography variant="p"
                                 sx={{marginRight: 1}}>{memberCount} member{memberCount > 1 && "s"}</Typography>
                 </div>
                 <div className="team-card-button">
-                    {button}
+                    {buttons}
                 </div>
             </div>
+            <ConfirmDeleteDialog
+                open={deleteDialogOpen}
+                deleteFunction={deleteTeam}
+                toggleDialog={toggleDeleteDialog}
+                itemId={teamId}
+                name={name}
+            />
         </Card>
     );
 };

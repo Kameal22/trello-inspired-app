@@ -37,3 +37,11 @@ export const postTeamBoard = (board, teamId, token) => {
         }
     }).then(response => response.data);
 }
+
+export const deleteTeam = (teamId, token) => {
+    return axios.delete(`${BASE_URL}/teams/${teamId}` , {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
+}

@@ -4,7 +4,7 @@ import Column from "../components/Column/Column";
 import {DragDropContext, Droppable} from "react-beautiful-dnd";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useHistory} from "react-router-dom";
-import ConfirmDeleteBoardDialog from "../components/Board/ConfirmDeleteBoardDialog/ConfirmDeleteBoardDialog";
+import ConfirmDeleteDialog from "../components/ConfirmDeleteDialog";
 import {deleteBoard, fetchBoardDetails, fetchBoardMembers} from "../services/board-service";
 import {FORBIDDEN, NO_CONTENT, NOT_FOUND, UNAUTHORIZED} from "../constants/http_statuses";
 import {deleteTask, editTask} from "../services/task-service";
@@ -293,11 +293,11 @@ const BoardPage = ({boardId}) => {
                     {columnItems}
                 </Grid>
             </DragDropContext>
-            <ConfirmDeleteBoardDialog
+            <ConfirmDeleteDialog
                 open={deleteDialogOpen}
-                deleteBoard={handleDeleteBoard}
+                deleteFunction={handleDeleteBoard}
                 toggleDialog={toggleDeleteDialog}
-                boardId={boardId}
+                itemId={boardId}
                 name={boardDetails.name}
             />
             <Snackbar open={snackbar.open} autoHideDuration={3000} onClose={handleSnackbarClose}>

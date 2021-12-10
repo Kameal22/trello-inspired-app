@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {fetchAllTeams, postTeam} from "../services/team-service";
+import {deleteTeam, fetchAllTeams, postTeam} from "../services/team-service";
 import {Button, Card, Typography} from "@mui/material";
 import TeamCard from "../components/Team/TeamCard";
 import NewTeamDialog from "../components/Team/NewTeamDialog";
@@ -29,7 +29,12 @@ const TeamsPage = () => {
             .then(team => setTeams([...teams, team]))
     }
 
-    const teamsMapped = teams.map(team => <TeamCard {...team} key={team.teamId}/>);
+    const handleDeleteTeam = (teamId) => {
+        deleteTeam(teamId, token)
+            .then(() => setTeams(teams.filter(team => team.teamId !== teamId)))
+    }
+
+    const teamsMapped = teams.map(team => <TeamCard {...team} key={team.teamId} deleteTeam={handleDeleteTeam}/>);
     return (
         <div>
             <Typography variant="h2" style={teamsHeaderStyle}>
