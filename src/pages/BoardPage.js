@@ -29,13 +29,16 @@ const BoardPage = ({boardId}) => {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const history = useHistory();
     const {token} = useContext(AuthContext);
+    const [authorizationError, setAuthorizationError] = useState("")
 
     useEffect(() => {
-        fetchBoardDetails(boardId)
+        fetchBoardDetails(boardId, token)
             .then(details => setBoardDetails(details))
             .catch(error => {
                 if (error.response.status === NOT_FOUND) {
                     setBoardNotFound(true);
+                } else if (error.response.status === UNAUTHORIZED || error.response.status === FORBIDDEN) {
+                    setAuthorizationError(error.response.data.description);
                 }
             });
     }, [])
@@ -279,6 +282,12 @@ const BoardPage = ({boardId}) => {
                 )}
             </Droppable>
         </Grid>);
+
+    if (authorizationError) {
+        return <Typography variant="h3" style={{height: '10%', marginTop: 20}}>
+            {authorizationError}
+        </Typography>
+    }
 
     return (
         <div style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
