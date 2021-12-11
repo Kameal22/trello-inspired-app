@@ -1,0 +1,9 @@
+.board-card {
+    height: 150px;
+    background-color: rgb(62,60,60) !important;
+    color: white !important;
+}
+
+.board-card:hover {
+    background-color: rgba(73, 69, 69, 0.81) !important;
+}

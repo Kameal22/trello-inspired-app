@@ -6,11 +6,6 @@ import NewTeamDialog from "../components/Team/NewTeamDialog";
 import {AuthContext} from "../contexts/AuthContext";
 import PageTitle from "../components/PageTitle";
 
-const teamsHeaderStyle = {
-    textAlign: "center",
-    marginBottom: 40
-};
-
 const TeamsPage = () => {
     const [teams, setTeams] = useState([]);
     const [open, setOpen] = useState(false);
