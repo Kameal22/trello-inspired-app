@@ -1,10 +1,12 @@
 import React, {useContext, useState} from 'react';
-import {Alert, Box, Button, Snackbar, TextField, Typography} from "@mui/material";
-import {Link, useHistory} from "react-router-dom";
+import {Alert, Box, Button, Divider, Snackbar, TextField, Typography} from "@mui/material";
+import {useHistory} from "react-router-dom";
 import {AuthContext} from "../contexts/AuthContext";
 import useInputState from "../hooks/useInputState";
 import {register} from "../services/auth-service";
 import {BAD_REQUEST, CONFLICT} from "../constants/http_statuses";
+import LinkButton from "../components/LinkButton";
+import "../styles/AuthenticationPage.css"
 
 const RegisterPage = () => {
     const history = useHistory();
@@ -73,97 +75,81 @@ const RegisterPage = () => {
     }
 
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                textAlign: 'center',
-                justifyContent: 'center',
-                minHeight: '100vh',
-                background: 'linear-gradient(0deg, rgba(252,252,252,1) 0%, rgba(207,205,226,0.788953081232493) 71%)'
-            }}
-        >
-            <Typography component="h1" variant="h5">
-                Register
-            </Typography>
-            <Box component="form" onSubmit={handleRegister} noValidate sx={{mt: 1}}>
-                <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="username"
-                    label="Username"
-                    name="username"
-                    autoComplete="username"
-                    autoFocus
-                    error={usernameError}
-                    helperText={usernameError ? "Username can't be blank" : ""}
-                    value={username}
-                    onChange={updateUsername}
-                />
-                <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    error={passwordError}
-                    helperText={passwordError ? "Password must be at least 8 characters" : ""}
-                    value={password}
-                    onChange={updatePassword}
-                />
-                <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="name"
-                    label="Name"
-                    name="name"
-                    sx={{mt: 3}}
-                    error={nameError}
-                    helperText={nameError ? "Name can't be blank" : ""}
-                    value={name}
-                    onChange={updateName}
-                />
-                <TextField
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="surname"
-                    label="Surname"
-                    name="surname"
-                    error={surnameError}
-                    helperText={surnameError ? "Surname can't be blank" : ""}
-                    value={surname}
-                    onChange={updateSurname}
-                />
-                <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{mt: 5, mb: 2}}
-                >
+        <div className="authentication-page">
+            <Box className="authentication-box">
+                <Typography component="h1" variant="h5">
                     Register
-                </Button>
-                <Link to={'/login'} style={{textDecoration: 'none'}}>
-                    <Button
+                </Typography>
+                <Box component="form" onSubmit={handleRegister} noValidate sx={{mt: 1}}>
+                    <TextField
+                        margin="normal"
+                        required
                         fullWidth
-                        variant="outlined"
-                        sx={{mt: 1, mb: 2}}
+                        id="username"
+                        label="Username"
+                        name="username"
+                        autoComplete="username"
+                        autoFocus
+                        error={usernameError}
+                        helperText={usernameError ? "Username can't be blank" : ""}
+                        value={username}
+                        onChange={updateUsername}
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        label="Password"
+                        type="password"
+                        id="password"
+                        error={passwordError}
+                        helperText={passwordError ? "Password must be at least 8 characters" : ""}
+                        value={password}
+                        onChange={updatePassword}
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="name"
+                        label="Name"
+                        name="name"
+                        sx={{mt: 3}}
+                        error={nameError}
+                        helperText={nameError ? "Name can't be blank" : ""}
+                        value={name}
+                        onChange={updateName}
+                    />
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="surname"
+                        label="Surname"
+                        name="surname"
+                        error={surnameError}
+                        helperText={surnameError ? "Surname can't be blank" : ""}
+                        value={surname}
+                        onChange={updateSurname}
+                    />
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{mt: 5, mb: 2}}
                     >
-                        Login
+                        Register
                     </Button>
-                </Link>
+                    <LinkButton to="/login" text="login" style={{mt: 1, mb: 2}}/>
+                </Box>
+                <Snackbar open={snackbar.open} autoHideDuration={3000} onClose={handleSnackbarClose}>
+                    <Alert onClose={handleSnackbarClose} severity={snackbar.type} sx={{width: '100%'}}>
+                        {snackbar.message}
+                    </Alert>
+                </Snackbar>
             </Box>
-            <Snackbar open={snackbar.open} autoHideDuration={3000} onClose={handleSnackbarClose}>
-                <Alert onClose={handleSnackbarClose} severity={snackbar.type} sx={{width: '100%'}}>
-                    {snackbar.message}
-                </Alert>
-            </Snackbar>
-        </Box>
+        </div>
     );
 };
 
