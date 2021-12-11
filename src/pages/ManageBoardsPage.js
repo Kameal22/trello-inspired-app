@@ -1,16 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Typography} from "@mui/material";
 import BoardAccordion from "../components/Board/BoardAccordion/BoardAccordion";
 import {ADMIN_ROLE} from "../utils/RoleUtils";
 import {postAdminRights} from "../services/board-service";
 import {NO_CONTENT} from "../constants/http_statuses";
 import {fetchAllBoardsAndMembersForUser} from "../services/user-service";
 import {AuthContext} from "../contexts/AuthContext";
-
-const boardsPageStyle = {
-    textAlign: "center",
-    marginBottom: 40
-};
+import PageTitle from "../components/PageTitle";
 
 const ManageBoardsPage = ({userId}) => {
     const [boards, setBoards] = useState([]);
@@ -45,7 +40,7 @@ const ManageBoardsPage = ({userId}) => {
                                                                 addAdminRights={addAdminRights}/>);
     return (
         <div>
-            <Typography variant="h2" style={boardsPageStyle}>Manage boards:</Typography>
+            <PageTitle text="Manage boards:"/>
             {boardAccordions}
         </div>
     );
