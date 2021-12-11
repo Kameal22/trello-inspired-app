@@ -1,10 +1,12 @@
 import React, {useContext, useState} from 'react';
 import {Alert, Box, Button, Snackbar, TextField, Typography} from "@mui/material";
-import {Link, useHistory} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {AuthContext} from "../contexts/AuthContext";
 import useInputState from "../hooks/useInputState";
 import {login} from "../services/auth-service";
 import {BAD_REQUEST, UNAUTHORIZED} from "../constants/http_statuses";
+import "../styles/LoginPage.css"
+import LinkButton from "../components/LinkButton";
 
 const LoginPage = () => {
     const history = useHistory();
@@ -62,17 +64,7 @@ const LoginPage = () => {
     }
 
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                textAlign: 'center',
-                justifyContent: 'center',
-                minHeight: '100vh',
-                background: 'linear-gradient(0deg, rgba(252,252,252,1) 0%, rgba(207,205,226,0.788953081232493) 71%)'
-            }}
-        >
+        <Box className="login-page">
             <Typography component="h1" variant="h5">
                 Sign in
             </Typography>
@@ -112,15 +104,10 @@ const LoginPage = () => {
                 >
                     Sign In
                 </Button>
-                <Link to={'/register'} style={{textDecoration: 'none'}}>
-                    <Button
-                        fullWidth
-                        variant="outlined"
-                        sx={{mt: 1, mb: 2}}
-                    >
-                        Register
-                    </Button>
-                </Link>
+                <div className="button-row">
+                    <LinkButton to='/register' text="Register"/>
+                    <LinkButton to='/main-page' text="Continue as guest"/>
+                </div>
             </Box>
             <Snackbar open={snackbar.open} autoHideDuration={3000} onClose={handleSnackbarClose}>
                 <Alert onClose={handleSnackbarClose} severity={snackbar.type} sx={{width: '100%'}}>
