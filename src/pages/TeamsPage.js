@@ -1,9 +1,10 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {deleteTeam, fetchAllTeams, postTeam} from "../services/team-service";
-import {Button, Card, Typography} from "@mui/material";
+import {Button, Card} from "@mui/material";
 import TeamCard from "../components/Team/TeamCard";
 import NewTeamDialog from "../components/Team/NewTeamDialog";
 import {AuthContext} from "../contexts/AuthContext";
+import PageTitle from "../components/PageTitle";
 
 const teamsHeaderStyle = {
     textAlign: "center",
@@ -37,9 +38,7 @@ const TeamsPage = () => {
     const teamsMapped = teams.map(team => <TeamCard {...team} key={team.teamId} deleteTeam={handleDeleteTeam}/>);
     return (
         <div>
-            <Typography variant="h2" style={teamsHeaderStyle}>
-                All teams
-            </Typography>
+            <PageTitle text="All teams"/>
             {teamsMapped}
             <div style={{textAlign: "center"}}>
                 <Card sx={{width: "20%", margin: "auto"}}>

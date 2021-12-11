@@ -1,10 +1,10 @@
 import React from 'react';
-import {Typography} from "@mui/material";
+import PageTitle from "../components/PageTitle";
 
 const WelcomePage = () => {
     return (
         <div style={{textAlign: "center"}}>
-            <Typography variant="h2">Welcome</Typography>
+            <PageTitle text="Welcome"/>
         </div>
     );
 };

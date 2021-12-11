@@ -1,10 +1,10 @@
 import React from 'react';
-import {Typography} from "@mui/material";
+import PageTitle from "../components/PageTitle";
 
 const NotFoundPage = () => {
     return (
         <div style={{textAlign: "center"}}>
-            <Typography variant="h2">Page not found.</Typography>
+            <PageTitle text="Page not found"/>
         </div>
     );
 };

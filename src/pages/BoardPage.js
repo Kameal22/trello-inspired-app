@@ -10,6 +10,7 @@ import {FORBIDDEN, NO_CONTENT, NOT_FOUND, UNAUTHORIZED} from "../constants/http_
 import {deleteTask, editTask} from "../services/task-service";
 import {addTask, updateTasksInColumn} from "../services/column-service";
 import {AuthContext} from "../contexts/AuthContext";
+import PageTitle from "../components/PageTitle";
 
 const deleteIconStyle = {
     float: "right",
@@ -292,9 +293,7 @@ const BoardPage = ({boardId}) => {
     return (
         <div style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
             <div>
-                <Typography variant="h3" style={{height: '10%'}}>
-                    {boardNotFound ? "Board not found" : boardDetails.name}
-                </Typography>
+                <PageTitle text={boardNotFound ? "Board not found" : boardDetails.name}/>
                 {!boardNotFound && <DeleteIcon style={deleteIconStyle} onClick={toggleDeleteDialog}/>}
             </div>
             <DragDropContext onDragEnd={handleDroppingTask}>

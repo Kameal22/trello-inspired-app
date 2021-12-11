@@ -31,7 +31,12 @@ export const AuthProvider = (props) => {
 
         const user = getUser();
         const exp = new Date(user.exp * 1000);
-        return new Date().getTime() < exp.getTime();
+        const isTokenNotExpired = new Date().getTime() < exp.getTime();
+        if(!isTokenNotExpired) {
+            logout();
+        }
+
+        return isTokenNotExpired;
     }
 
     return (

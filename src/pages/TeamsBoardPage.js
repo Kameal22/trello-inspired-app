@@ -1,18 +1,11 @@
 import React from 'react';
-import {Typography} from "@mui/material";
 import BoardList from "../components/Board/BoardList/BoardList";
-
-const boardsPageStyle = {
-    textAlign: "center",
-    marginBottom: 40
-};
+import PageTitle from "../components/PageTitle";
 
 const TeamsBoardPage = ({teamId}) => {
     return (
         <div>
-            <Typography variant="h2" style={boardsPageStyle}>
-                Teams boards
-            </Typography>
+            <PageTitle text="Team boards"/>
             <BoardList teamId={teamId}/>
         </div>
     );
