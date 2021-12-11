@@ -4,10 +4,6 @@
 
 Trello / JIRA inspired application for making kanban boards.
 
-## Database schema
-
-![Screenshot](trello-inspired-app-schema.png)
-
 ## Running application
 
 ### `npm install`
