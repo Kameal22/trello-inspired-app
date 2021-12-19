@@ -33,6 +33,10 @@ const ManageBoardsPage = ({userId}) => {
             });
     }
 
+    if (boards.length <= 0) {
+        return <PageTitle text="You don't have boards that you created"/>
+    }
+
     const boardAccordions = boards.map(board => <BoardAccordion key={board.boardId}
                                                                 name={board.name}
                                                                 boardId={board.boardId}
@@ -40,7 +44,7 @@ const ManageBoardsPage = ({userId}) => {
                                                                 addAdminRights={addAdminRights}/>);
     return (
         <div>
-            <PageTitle text="Manage boards:"/>
+            <PageTitle text="Manage boards"/>
             {boardAccordions}
         </div>
     );

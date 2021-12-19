@@ -285,9 +285,7 @@ const BoardPage = ({boardId}) => {
         </Grid>);
 
     if (authorizationError) {
-        return <Typography variant="h3" style={{height: '10%', marginTop: 20}}>
-            {authorizationError}
-        </Typography>
+        return <PageTitle text={authorizationError}/>
     }
 
     return (
